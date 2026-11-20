@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Méthode du redécoupage</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Note de recherche : une colonne de texte (~68 caractères), des figures plus larges en panneaux numérotés. */
+:root {
+  --bg: #f4f5f7; --panel: #ffffff; --ink: #151821; --muted: #5d6474; --line: #dfe2e8; --line-strong: #b9bec9;
+  --accent: #2b3a67; --muted-fill: #e6e8ee; --merge: #c9cfdd; --cut: #c2410c;
+  --a1: #2a9d8f; --a2: #8e6bbf; --s1: #2b3a67; --s2: #7a8db8; --s3: #b46f2a;
+  --f-NFP: #d7263d; --f-RN: #1f2f5c; --f-ENS: #f0b400; --f-LR: #3e8ed0; --f-DVD: #92b9dd; --f-DVG: #e98ea3;
+  --f-DVC: #f3d98b; --f-REG: #5e9e6b; --f-EXD: #5b4636; --f-ECO: #49a35a; --f-other: #a2a7b0;
+  --halo: rgba(255,255,255,.9);
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12141a; --panel: #1a1d25; --ink: #e8eaf0; --muted: #9aa1b2; --line: #2b2f3a; --line-strong: #444a59;
+  --accent: #9fb2ff; --muted-fill: #262a35; --merge: #3a4256; --cut: #fb923c;
+  --a1: #3cc2b2; --a2: #b294e0; --s1: #9fb2ff; --s2: #5f6f99; --s3: #e0a060;
+  --f-RN: #5a6fc4; --f-EXD: #8d735f; --halo: rgba(26,29,37,.9); color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #12141a; --panel: #1a1d25; --ink: #e8eaf0; --muted: #9aa1b2; --line: #2b2f3a; --line-strong: #444a59;
+  --accent: #9fb2ff; --muted-fill: #262a35; --merge: #3a4256; --cut: #fb923c;
+  --a1: #3cc2b2; --a2: #b294e0; --s1: #9fb2ff; --s2: #5f6f99; --s3: #e0a060;
+  --f-RN: #5a6fc4; --f-EXD: #8d735f; --halo: rgba(26,29,37,.9); color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.62 var(--font-text);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 64px; }
+main { max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+.col { max-width: 68ch; }
+a { color: var(--accent); }
+.back { font: 500 14px var(--font-ui); text-decoration: none; }
+.eyebrow { font: 600 11px/1.2 var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 18px; }
+h1 { font: 800 clamp(28px, 4vw, 40px)/1.12 var(--font-display); margin: 8px 0 12px; letter-spacing: -.01em; text-wrap: balance; }
+h2 { font: 700 22px/1.25 var(--font-display); margin: 44px 0 10px; text-wrap: balance; }
+h2 .num { color: var(--muted); font-weight: 600; margin-right: 8px; }
+p { margin: 0 0 14px; }
+.abstract { font-size: 17.5px; border-left: 3px solid var(--line-strong); padding-left: 16px; color: var(--ink); }
+.byline { font: 13px var(--font-ui); color: var(--muted); }
+em.v, var { font-style: italic; font-family: var(--font-text); }
+.math { font-family: var(--font-text); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin: 6px 0 16px; overflow-x: auto; font-size: 16.5px; line-height: 1.9; }
+.math .lbl { font: 600 12px var(--font-ui); color: var(--muted); display: inline-block; min-width: 46px; }
+code, .mono { font-family: var(--font-data); font-size: .88em; }
+
+figure { margin: 18px 0 22px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+figcaption { font: 13.5px/1.5 var(--font-ui); color: var(--muted); margin-top: 10px; max-width: 90ch; }
+figcaption b { color: var(--ink); font-weight: 600; }
+.panels { display: grid; gap: 12px; }
+.panels.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.panels.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 760px) { .panels.two, .panels.three { grid-template-columns: minmax(0, 1fr); } }
+.panel h3 { font: 600 13px var(--font-ui); margin: 0 0 6px; color: var(--ink); }
+.panel h3 span { color: var(--muted); font-weight: 500; }
+svg.fig, svg.chart, svg.bars { width: 100%; height: auto; display: block; }
+svg.fig { max-height: 520px; }
+.wide svg.fig { max-height: 560px; }
+svg .dlabel { font: 800 22px var(--font-display); fill: var(--ink); text-anchor: middle; paint-order: stroke; stroke: var(--halo); stroke-width: 5px; stroke-linejoin: round; }
+svg .dlabel .sup { font-size: 13px; }
+svg .city circle { fill: var(--ink); stroke: var(--halo); stroke-width: 1.5; }
+svg .city text { font: 600 12px var(--font-ui); fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 3.5px; stroke-linejoin: round; }
+svg .edges line { stroke: var(--muted); stroke-width: .7; stroke-opacity: .55; }
+svg .nodes circle { stroke: var(--panel); stroke-width: .6; }
+svg .tree line { stroke: var(--ink); stroke-width: 1.1; stroke-opacity: .8; }
+svg .balanced line { stroke: var(--cut); stroke-width: 4; stroke-linecap: round; stroke-opacity: .55; }
+svg line.cut { stroke: var(--cut); stroke-width: 6; stroke-linecap: round; }
+svg .cutmark { fill: none; stroke: var(--cut); stroke-width: 2.5; }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .tick, svg .axis, svg .dl { font: 11px var(--font-ui); fill: var(--muted); }
+svg .dl { font-weight: 600; }
+svg polyline { fill: none; stroke-linejoin: round; }
+svg polyline.cur { stroke-width: 1; stroke-opacity: .22; }
+svg polyline.best { stroke-width: 2.2; }
+svg .blabel { font: 600 13px var(--font-ui); fill: var(--ink); }
+svg .bval { font: 600 12px var(--font-ui); fill: var(--ink); paint-order: stroke; stroke: var(--halo); stroke-width: 3px; stroke-linejoin: round; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font: 12.5px var(--font-ui); color: var(--muted); margin-top: 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.ln { display: inline-block; width: 18px; height: 0; border-top: 3px solid; vertical-align: 3px; margin-right: 6px; }
+.tscroll { overflow-x: auto; margin-top: 10px; }
+table { border-collapse: collapse; width: 100%; font: 13.5px var(--font-ui); }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+th { font-weight: 600; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+td.n, th.n { text-align: right; font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.keyfacts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 8px 0 18px; }
+.kf { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.kf b { display: block; font: 700 22px var(--font-display); font-variant-numeric: tabular-nums; }
+.kf span { font: 12.5px var(--font-ui); color: var(--muted); }
+ol.refs { font: 14px/1.55 var(--font-ui); color: var(--muted); padding-left: 20px; }
+ol.refs li { margin-bottom: 6px; }
+.note { font: 14px/1.55 var(--font-ui); color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← Retour aux cartes</a>
+  <div class="eyebrow">Note méthodologique · Législatives 2024, 1er tour</div>
+  <h1>Redécoupage sous contraintes : un exemple pas à pas</h1>
+  <p class="byline">Cas d'étude : {{DEP_NAME}} ({{DEP}}), {{K}} circonscriptions · force optimisée : {{TG}} (Ensemble)</p>
+
+  <div class="col">
+    <p class="abstract">Nous cherchons à mesurer la sensibilité du résultat électoral au tracé des circonscriptions, à voix constantes. Le problème est formalisé comme une partition sous contraintes d'un graphe de bureaux de vote, explorée par une chaîne de Markov de recombinaison (ReCom) et optimisée par une stratégie de « rafales courtes ». Nous déroulons la méthode sur un département à trois circonscriptions, l'{{DEP_NAME}}, où le découpage optimal pour Ensemble porte le nombre de circonscriptions qu'il mène de {{WINS_REAL}} à {{WINS_OPT}}.</p>
+  </div>
+
+  <h2><span class="num">1</span>Formulation du problème</h2>
+  <div class="col">
+    <p>Soit <var>V</var> l'ensemble des bureaux de vote d'un département. À chaque bureau <var>v</var> sont associés un nombre d'inscrits <var>p(v)</var> et, pour chaque force politique <var>f</var>, un nombre de voix au premier tour <var>x<sub>f</sub>(v)</var>. Deux bureaux sont dits adjacents s'ils partagent une frontière ; on obtient ainsi un graphe <var>G = (V, E)</var>.</p>
+    <p>Un <em>plan</em> est une partition de <var>V</var> en <var>k</var> parties <var>D<sub>1</sub>, …, D<sub>k</sub></var>, où <var>k</var> est le nombre de circonscriptions actuellement attribué au département. Il est admissible s'il satisfait :</p>
+  </div>
+  <div class="math col">
+    <span class="lbl">(C1)</span> chaque <var>D<sub>i</sub></var> induit un sous-graphe connexe de <var>G</var> (territoire d'un seul tenant) ;<br>
+    <span class="lbl">(C2)</span> |&thinsp;<var>p(D<sub>i</sub>) − p̄</var>&thinsp;| ≤ <var>ε · p̄</var>, avec <var>p̄ = p(V) / k</var> et <var>ε</var> = 0,20 ;<br>
+    <span class="lbl">(obj.)</span> maximiser <var>F<sub>T</sub>(P) = Σ<sub>i</sub> 𝟙[ argmax<sub>f</sub> x<sub>f</sub>(D<sub>i</sub>) = T ]</var>, le nombre de circonscriptions où la force <var>T</var> arrive en tête.
+  </div>
+  <div class="col">
+    <p>La contrainte (C2) reprend le plafond légal d'écart démographique, appliqué ici aux inscrits faute de population par bureau. Nous faisons l'hypothèse que les voix d'une force dans une circonscription redessinée sont la somme de ses voix dans les bureaux qui la composent. L'espace des plans admissibles est de taille astronomique, même pour un petit département : l'énumération est hors de portée, et nous recourons à une exploration stochastique.</p>
+  </div>
+
+  <h2><span class="num">2</span>Le cas de l'{{DEP_NAME}}</h2>
+  <div class="col">
+    <p>Le département compte {{N_NODES}} bureaux de vote répartis sur {{N_COMMUNES}} communes, pour {{INSCRITS}} inscrits. Avec <var>k</var> = {{K}}, la circonscription idéale compte <var>p̄</var> = {{IDEAL}} inscrits, et (C2) impose à chaque circonscription d'en compter entre {{LOW}} et {{HIGH}}.</p>
+    <p>Au niveau départemental, Ensemble devance le RN : {{SH_ENS}} % des exprimés contre {{SH_RN}} %, et {{SH_NFP}} % pour le NFP (LR ne présente pas de candidat). Ensemble arrive en tête dans {{LEAD_ENS}} bureaux, le RN dans {{LEAD_RN}}, le NFP dans {{LEAD_NFP}}. Pourtant, le découpage en vigueur ne lui donne la tête que dans {{WINS_REAL}} circonscription sur {{K}}.</p>
+  </div>
+  <div class="keyfacts">
+    <div class="kf"><b>{{N_NODES}}</b><span>bureaux de vote</span></div>
+    <div class="kf"><b>{{INSCRITS}}</b><span>inscrits</span></div>
+    <div class="kf"><b>{{IDEAL}}</b><span>inscrits par circonscription idéale (p̄)</span></div>
+    <div class="kf"><b>{{LOW}}–{{HIGH}}</b><span>intervalle admissible (±20 %)</span></div>
+  </div>
+  <figure class="wide">
+    {{FIG_BUREAUX}}
+    <div class="legend"><span><span class="sw" style="background:var(--f-ENS)"></span>ENS en tête</span><span><span class="sw" style="background:var(--f-RN)"></span>RN en tête</span><span><span class="sw" style="background:var(--f-NFP)"></span>NFP en tête</span><span><span class="ln" style="border-color:var(--ink)"></span>circonscriptions actuelles</span></div>
+    <figcaption><b>Figure 1. Force en tête par bureau de vote, découpage actuel.</b> L'intensité de la couleur croît avec l'avance du premier sur le second (saturation à 25 points). Les contours de bureaux sont approximatifs (méthode INSEE, reconstitution à partir des adresses du répertoire électoral unique).</figcaption>
+  </figure>
+
+  <h2><span class="num">3</span>Du territoire au graphe</h2>
+  <div class="col">
+    <p>Chaque bureau devient un sommet, pondéré par ses inscrits et son vecteur de voix. Une arête relie deux bureaux dont les contours partagent au moins une trentaine de mètres de frontière, avec une tolérance de 5 m pour absorber les imprécisions géométriques. Un simple contact en un point ne suffit pas : il permettrait des circonscriptions « reliées » par un coin. Les îles et enclaves sont rattachées au bureau continental le plus proche.</p>
+    <p>Le graphe de l'{{DEP_NAME}} compte {{N_NODES}} sommets et {{N_EDGES}} arêtes, soit un degré moyen de {{DEG}} : la structure est presque planaire, comme attendu pour un pavage du territoire. Toute la suite du raisonnement se fait sur ce graphe ; la carte n'est plus qu'un mode de représentation.</p>
+  </div>
+  <figure class="wide">
+    {{FIG_GRAPH}}
+    <figcaption><b>Figure 2. Graphe d'adjacence des bureaux de vote.</b> Chaque disque est un bureau (aire proportionnelle aux inscrits, couleur : force en tête) ; chaque segment, une adjacence. La contrainte de connexité (C1) porte sur ce graphe.</figcaption>
+  </figure>
+
+  <h2><span class="num">4</span>Explorer l'espace des plans : la recombinaison (ReCom)</h2>
+  <div class="col">
+    <p>Nous parcourons l'espace des plans admissibles par une marche aléatoire dont chaque pas modifie deux circonscriptions voisines. La proposition ReCom (DeFord, Duchin et Solomon, 2021) procède en trois temps :</p>
+    <p>(a) on tire deux circonscriptions adjacentes et on fusionne leurs bureaux ; (b) on tire un arbre couvrant aléatoire du sous-graphe fusionné, puis on recense les arêtes de cet arbre dont la suppression produit deux composantes respectant (C2) ; (c) on en coupe une au hasard. Les deux composantes forment les nouvelles circonscriptions.</p>
+    <p>Comme un arbre privé d'une arête a exactement deux composantes connexes, (C1) est garantie par construction. Dans l'exemple ci-dessous, l'arbre couvrant compte {{N_TREE}} arêtes, dont seulement {{N_BAL}} donnent une coupe équilibrée. Les 1re et 2e circonscriptions passent de {{POP_B1}} et {{POP_B2}} inscrits à {{POP_A1}} et {{POP_A2}}.</p>
+  </div>
+  <figure>
+    <div class="panels three">
+      <div class="panel"><h3>(a) <span>Deux circonscriptions voisines</span></h3>{{FIG_RECOM_A}}</div>
+      <div class="panel"><h3>(b) <span>Fusion, arbre couvrant, coupes équilibrées</span></h3>{{FIG_RECOM_B}}</div>
+      <div class="panel"><h3>(c) <span>Nouveau plan</span></h3>{{FIG_RECOM_C}}</div>
+    </div>
+    <div class="legend"><span><span class="sw" style="background:var(--a1)"></span>1re circonscription</span><span><span class="sw" style="background:var(--a2)"></span>2e circonscription</span><span><span class="ln" style="border-color:var(--ink)"></span>arbre couvrant aléatoire</span><span><span class="ln" style="border-color:var(--cut);opacity:.55"></span>arêtes donnant une coupe équilibrée</span><span><span class="ln" style="border-color:var(--cut)"></span>arête coupée</span></div>
+    <figcaption><b>Figure 3. Un pas de la chaîne ReCom.</b> La 3e circonscription n'est pas modifiée. Le pas est tiré au hasard, sans regard pour le résultat électoral : c'est l'étape d'optimisation qui oriente ensuite la marche.</figcaption>
+  </figure>
+
+  <h2><span class="num">5</span>Orienter la marche : l'optimisation par rafales courtes</h2>
+  <div class="col">
+    <p>Seule, la chaîne ReCom échantillonne des plans « typiques » ; elle ne cherche pas les plans extrêmes. Pour maximiser <var>F<sub>T</sub></var>, nous suivons la stratégie des <em>short bursts</em> (Cannon et al., 2023) : on laisse la chaîne évoluer librement pendant <var>b</var> = {{BURST}} pas, on retient le meilleur plan rencontré, et l'on relance une nouvelle rafale depuis ce plan. La marche reste ainsi exploratoire à court terme, tout en étant ramenée régulièrement vers les meilleures régions de l'espace.</p>
+    <p>Le nombre de victoires étant un entier, le paysage d'optimisation est fait de vastes plateaux. Nous lui adjoignons un terme de guidage, strictement inférieur à 1 pour qu'une victoire l'emporte toujours :</p>
+  </div>
+  <div class="math col">
+    <var>s(P) = F<sub>T</sub>(P) + 0,9 · min(1, max(0, 1 + m* / 0,25))</var><br>
+    <span class="note">où <var>m*</var> est la marge (en part des exprimés) de la circonscription perdue la plus proche de basculer.</span>
+  </div>
+  <div class="col">
+    <p>Nous lançons trois essais indépendants de {{N_STEPS}} pas ({{N_BURSTS}} rafales), à partir de plans initiaux aléatoires, et conservons le meilleur. Sur l'{{DEP_NAME}}, les trois essais convergent vers le même optimum ({{TRAJ_WINS}}). Ils l'atteignent après {{REACH}} pas respectivement, et le reste du budget ne l'améliore plus. Cette convergence rapide et unanime suggère que l'optimum est atteint pour ce petit département. Elle ne se généralise pas : avec 10 à 20 circonscriptions, l'espace des plans croît de façon combinatoire, et le budget est porté à 1 000 pas par circonscription.</p>
+  </div>
+  <figure>
+    {{FIG_TRAJ}}
+    <div class="legend"><span><span class="ln" style="border-color:var(--s1)"></span>essai 1</span><span><span class="ln" style="border-color:var(--s2)"></span>essai 2</span><span><span class="ln" style="border-color:var(--s3)"></span>essai 3</span><span>trait fin : score du plan courant · trait épais : meilleur score atteint</span></div>
+    <figcaption><b>Figure 4. Trajectoire de l'optimisation pour Ensemble, {{N_SHOW}} premiers pas sur {{N_STEPS}}.</b> La partie entière du score est le nombre de circonscriptions menées par Ensemble ; la partie fractionnaire, la proximité de la prochaine bascule. Les paliers correspondent aux moments où une circonscription supplémentaire bascule.</figcaption>
+  </figure>
+
+  <h2><span class="num">6</span>Résultat : la dispersion d'un électorat</h2>
+  <div class="col">
+    <p>Le découpage actuel concentre une large part de l'électorat d'Ensemble dans la 1re circonscription, qu'il remporte avec une avance confortable. Ces voix excédentaires sont « perdues » au sens du scrutin majoritaire : elles n'apportent aucune circonscription supplémentaire. Dans les deux autres, Ensemble est devancé de peu par le RN.</p>
+    <p>Le plan optimisé fait l'inverse. Il répartit l'électorat d'Ensemble de manière presque uniforme, entre 35 et 38 % dans chaque circonscription, juste au-dessus du RN : c'est la stratégie classique de <em>dispersion</em> (<em>cracking</em>). Ensemble passe de {{WINS_REAL}} à {{WINS_OPT}} circonscriptions menées, à voix strictement identiques. Deux traits caractérisent ce résultat. Les avances obtenues sont faibles, de 2 à 4 points, donc fragiles. Et l'algorithme exploite la tolérance (C2) presque jusqu'à sa borne : la circonscription B compte près de 20 % d'inscrits de moins que la moyenne.</p>
+  </div>
+  <figure>
+    <div class="panels two">
+      <div class="panel"><h3>Découpage actuel <span>· Ensemble en tête dans {{WINS_REAL}} sur {{K}}</span></h3>{{FIG_REAL}}</div>
+      <div class="panel"><h3>Découpage optimisé pour Ensemble <span>· en tête dans {{WINS_OPT}} sur {{K}}</span></h3>{{FIG_OPT}}</div>
+    </div>
+    <figcaption><b>Figure 5. Découpage actuel et découpage optimisé.</b> Couleur : force en tête dans la circonscription ; intensité : avance sur la deuxième (saturation à 25 points).</figcaption>
+  </figure>
+  <figure>
+    <div class="panels two">
+      <div class="panel"><h3>Découpage actuel</h3>{{FIG_BARS_REAL}}<div class="tscroll">{{TAB_REAL}}</div></div>
+      <div class="panel"><h3>Découpage optimisé pour Ensemble</h3>{{FIG_BARS_OPT}}<div class="tscroll">{{TAB_OPT}}</div></div>
+    </div>
+    <div class="legend"><span><span class="sw" style="background:var(--f-ENS)"></span>ENS</span><span><span class="sw" style="background:var(--f-RN)"></span>RN</span><span><span class="sw" style="background:var(--f-NFP)"></span>NFP</span><span><span class="sw" style="background:var(--f-other)"></span>autres</span></div>
+    <figcaption><b>Figure 6. Parts des suffrages exprimés par circonscription.</b> Le découpage actuel concentre l'électorat d'Ensemble ; le découpage optimisé le répartit de façon presque égale, juste au-dessus du seuil de victoire.</figcaption>
+  </figure>
+
+  <h2><span class="num">7</span>Portée et limites</h2>
+  <div class="col">
+    <p><b>Des bornes inférieures.</b> L'optimisation est heuristique : les maxima rapportés sont atteints par au moins un plan admissible, mais rien ne garantit qu'il n'en existe pas de meilleur, en particulier dans les grands départements.</p>
+    <p><b>Agrégation des voix.</b> Additionner les voix d'une force entre bureaux suppose que l'électeur vote pour l'étiquette et non pour le candidat. Les effets de candidature, d'implantation locale et de désistement ne sont pas modélisés, et seul le premier tour est considéré.</p>
+    <p><b>Géographie approchée.</b> Les contours de bureaux sont reconstitués à partir d'adresses. Nous corrigeons leurs morceaux disjoints, mais quelques circonscriptions présentent encore de petits fragments détachés, du même ordre que sur le découpage réel tracé avec les mêmes données.</p>
+    <p><b>Contraintes allégées.</b> Le droit impose aussi des considérations que nous ignorons : respect des limites cantonales et communales, continuité historique, et appréciation du Conseil constitutionnel. Ces contraintes réduiraient l'ampleur du charcutage possible ; nos résultats décrivent donc ce que permet la seule règle démographique.</p>
+  </div>
+
+  <h2><span class="num">8</span>Références</h2>
+  <ol class="refs col">
+    <li>DeFord, D., Duchin, M. et Solomon, J. (2021). Recombination: A family of Markov chains for redistricting. <i>Harvard Data Science Review</i>, 3(1).</li>
+    <li>Cannon, S., Goldbloom-Helzner, A., Gupta, V., Matthews, J. N. et Suwal, B. (2023). Voting rights, Markov chains, and optimization by short bursts. <i>Methodology and Computing in Applied Probability</i>, 25(1).</li>
+    <li>MGGG Redistricting Lab. GerryChain, bibliothèque Python (version 1.0).</li>
+    <li>Ministère de l'Intérieur. Résultats définitifs du 1er tour des élections législatives de 2024 par bureau de vote (data.gouv.fr).</li>
+    <li>INSEE. « À vote, à chaque bureau de vote ses électeurs », méthode de reconstitution des contours de bureaux de vote ; contours publiés sur data.gouv.fr.</li>
+  </ol>
+</main>
+</body>
+</html>
