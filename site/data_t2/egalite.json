@@ -1,0 +1,1758 @@
+{
+"tol": 0.5,
+"changed": 7,
+"real": {
+"NFP": 172.09,
+"ENS": 150.17,
+"RN": 143.01,
+"LR": 37.94,
+"DVD": 21.26,
+"DVG": 5.58,
+"REG": 3.2,
+"DVC": 2.81,
+"OTHER": 1.68,
+"EXD": 1.03
+},
+"scen": {
+"NFP": 157.23,
+"RN": 157.15,
+"ENS": 156.94,
+"LR": 35.44,
+"DVD": 19.62,
+"DVG": 3.63,
+"REG": 3.2,
+"DVC": 2.81,
+"OTHER": 1.68,
+"EXD": 1.03
+},
+"departements": [
+{
+"dep": "01",
+"name": "Ain",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 0.06,
+"RN": 1.98,
+"ENS": 2.05,
+"LR": 0.91
+},
+"scen": {
+"NFP": 0.06,
+"RN": 1.98,
+"ENS": 2.05,
+"LR": 0.91
+}
+},
+{
+"dep": "02",
+"name": "Aisne",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 3.58,
+"ENS": 0,
+"LR": 0.42
+},
+"scen": {
+"NFP": 0,
+"RN": 3.58,
+"ENS": 0,
+"LR": 0.42
+}
+},
+{
+"dep": "03",
+"name": "Allier",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.52,
+"RN": 1.5,
+"ENS": 0,
+"LR": 0.98
+},
+"scen": {
+"NFP": 0.52,
+"RN": 1.5,
+"ENS": 0,
+"LR": 0.98
+}
+},
+{
+"dep": "04",
+"name": "Alpes-de-Haute-Provence",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0.55,
+"RN": 1.45,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0.55,
+"RN": 1.45,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "05",
+"name": "Hautes-Alpes",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 1.58,
+"RN": 0.42,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 1.58,
+"RN": 0.42,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "06",
+"name": "Alpes-Maritimes",
+"k": 9,
+"choice": "real",
+"real": {
+"NFP": 0.4,
+"RN": 5.76,
+"ENS": 0,
+"LR": 2.83
+},
+"scen": {
+"NFP": 0.4,
+"RN": 5.76,
+"ENS": 0,
+"LR": 2.83
+}
+},
+{
+"dep": "07",
+"name": "Ardèche",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 1.65,
+"RN": 0.98,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 1.65,
+"RN": 0.98,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "08",
+"name": "Ardennes",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0.39,
+"ENS": 0.69,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 0.39,
+"ENS": 0.69,
+"LR": 0
+}
+},
+{
+"dep": "09",
+"name": "Ariège",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 2.0,
+"RN": 0.01,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 2.0,
+"RN": 0.01,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "10",
+"name": "Aube",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.01,
+"RN": 2.27,
+"ENS": 0,
+"LR": 0.72
+},
+"scen": {
+"NFP": 0.01,
+"RN": 2.27,
+"ENS": 0,
+"LR": 0.72
+}
+},
+{
+"dep": "11",
+"name": "Aude",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.15,
+"RN": 2.84,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0.15,
+"RN": 2.84,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "12",
+"name": "Aveyron",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.91,
+"RN": 0.12,
+"ENS": 1.97,
+"LR": 0
+},
+"scen": {
+"NFP": 0.91,
+"RN": 0.12,
+"ENS": 1.97,
+"LR": 0
+}
+},
+{
+"dep": "13",
+"name": "Bouches-du-Rhône",
+"k": 16,
+"choice": "RN",
+"real": {
+"NFP": 4.89,
+"RN": 9.38,
+"ENS": 0.78,
+"LR": 0
+},
+"scen": {
+"NFP": 2.71,
+"RN": 12.67,
+"ENS": 0.6,
+"LR": 0
+}
+},
+{
+"dep": "14",
+"name": "Calvados",
+"k": 6,
+"choice": "real",
+"real": {
+"NFP": 1.05,
+"RN": 0.11,
+"ENS": 3.89,
+"LR": 0
+},
+"scen": {
+"NFP": 1.05,
+"RN": 0.11,
+"ENS": 3.89,
+"LR": 0
+}
+},
+{
+"dep": "15",
+"name": "Cantal",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 0,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "16",
+"name": "Charente",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.5,
+"RN": 0.36,
+"ENS": 2.14,
+"LR": 0
+},
+"scen": {
+"NFP": 0.5,
+"RN": 0.36,
+"ENS": 2.14,
+"LR": 0
+}
+},
+{
+"dep": "17",
+"name": "Charente-Maritime",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 1.04,
+"RN": 1.53,
+"ENS": 1.44,
+"LR": 0
+},
+"scen": {
+"NFP": 1.04,
+"RN": 1.53,
+"ENS": 1.44,
+"LR": 0
+}
+},
+{
+"dep": "18",
+"name": "Cher",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.3,
+"RN": 0.98,
+"ENS": 1.73,
+"LR": 0
+},
+"scen": {
+"NFP": 0.3,
+"RN": 0.98,
+"ENS": 1.73,
+"LR": 0
+}
+},
+{
+"dep": "19",
+"name": "Corrèze",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0.95,
+"RN": 0.08,
+"ENS": 0,
+"LR": 0.97
+},
+"scen": {
+"NFP": 0.95,
+"RN": 0.08,
+"ENS": 0,
+"LR": 0.97
+}
+},
+{
+"dep": "21",
+"name": "Côte-d'Or",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 1.6,
+"RN": 0.94,
+"ENS": 1.53,
+"LR": 0.93
+},
+"scen": {
+"NFP": 1.6,
+"RN": 0.94,
+"ENS": 1.53,
+"LR": 0.93
+}
+},
+{
+"dep": "22",
+"name": "Côtes-d'Armor",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 1.04,
+"RN": 0.17,
+"ENS": 2.78,
+"LR": 1.0
+},
+"scen": {
+"NFP": 1.04,
+"RN": 0.17,
+"ENS": 2.78,
+"LR": 1.0
+}
+},
+{
+"dep": "23",
+"name": "Creuse",
+"k": 1,
+"choice": "real",
+"real": {
+"NFP": 0.11,
+"RN": 0.58,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0.11,
+"RN": 0.58,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "24",
+"name": "Dordogne",
+"k": 4,
+"choice": "real",
+"real": {
+"NFP": 1.98,
+"RN": 2.02,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 1.98,
+"RN": 2.02,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "25",
+"name": "Doubs",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 1.33,
+"RN": 1.41,
+"ENS": 1.26,
+"LR": 1.0
+},
+"scen": {
+"NFP": 1.33,
+"RN": 1.41,
+"ENS": 1.26,
+"LR": 1.0
+}
+},
+{
+"dep": "26",
+"name": "Drôme",
+"k": 4,
+"choice": "real",
+"real": {
+"NFP": 2.02,
+"RN": 1.95,
+"ENS": 0,
+"LR": 0.02
+},
+"scen": {
+"NFP": 2.02,
+"RN": 1.95,
+"ENS": 0,
+"LR": 0.02
+}
+},
+{
+"dep": "27",
+"name": "Eure",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 0.65,
+"RN": 3.57,
+"ENS": 0.78,
+"LR": 0
+},
+"scen": {
+"NFP": 0.65,
+"RN": 3.57,
+"ENS": 0.78,
+"LR": 0
+}
+},
+{
+"dep": "28",
+"name": "Eure-et-Loir",
+"k": 4,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0.89,
+"ENS": 1.9,
+"LR": 0.91
+},
+"scen": {
+"NFP": 0,
+"RN": 0.89,
+"ENS": 1.9,
+"LR": 0.91
+}
+},
+{
+"dep": "29",
+"name": "Finistère",
+"k": 8,
+"choice": "real",
+"real": {
+"NFP": 2.73,
+"RN": 0.07,
+"ENS": 5.16,
+"LR": 0
+},
+"scen": {
+"NFP": 2.73,
+"RN": 0.07,
+"ENS": 5.16,
+"LR": 0
+}
+},
+{
+"dep": "2A",
+"name": "Corse-du-Sud",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0.74,
+"ENS": 0.26,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 0.74,
+"ENS": 0.26,
+"LR": 0
+}
+},
+{
+"dep": "2B",
+"name": "Haute-Corse",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 0,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "30",
+"name": "Gard",
+"k": 6,
+"choice": "real",
+"real": {
+"NFP": 0.93,
+"RN": 5.07,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0.93,
+"RN": 5.07,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "31",
+"name": "Haute-Garonne",
+"k": 10,
+"choice": "real",
+"real": {
+"NFP": 7.76,
+"RN": 0.61,
+"ENS": 1.62,
+"LR": 0
+},
+"scen": {
+"NFP": 7.76,
+"RN": 0.61,
+"ENS": 1.62,
+"LR": 0
+}
+},
+{
+"dep": "32",
+"name": "Gers",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0.01,
+"RN": 0.06,
+"ENS": 0.94,
+"LR": 0
+},
+"scen": {
+"NFP": 0.01,
+"RN": 0.06,
+"ENS": 0.94,
+"LR": 0
+}
+},
+{
+"dep": "33",
+"name": "Gironde",
+"k": 12,
+"choice": "real",
+"real": {
+"NFP": 5.78,
+"RN": 2.29,
+"ENS": 3.93,
+"LR": 0
+},
+"scen": {
+"NFP": 5.78,
+"RN": 2.29,
+"ENS": 3.93,
+"LR": 0
+}
+},
+{
+"dep": "34",
+"name": "Hérault",
+"k": 9,
+"choice": "RN",
+"real": {
+"NFP": 4.61,
+"RN": 3.44,
+"ENS": 0.01,
+"LR": 0
+},
+"scen": {
+"NFP": 2.09,
+"RN": 6.88,
+"ENS": 0.03,
+"LR": 0
+}
+},
+{
+"dep": "35",
+"name": "Ille-et-Vilaine",
+"k": 8,
+"choice": "real",
+"real": {
+"NFP": 4.48,
+"RN": 0.06,
+"ENS": 2.45,
+"LR": 0
+},
+"scen": {
+"NFP": 4.48,
+"RN": 0.06,
+"ENS": 2.45,
+"LR": 0
+}
+},
+{
+"dep": "36",
+"name": "Indre",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0.11,
+"ENS": 0.97,
+"LR": 0.92
+},
+"scen": {
+"NFP": 0,
+"RN": 0.11,
+"ENS": 0.97,
+"LR": 0.92
+}
+},
+{
+"dep": "37",
+"name": "Indre-et-Loire",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 1.81,
+"RN": 0.2,
+"ENS": 2.99,
+"LR": 0
+},
+"scen": {
+"NFP": 1.81,
+"RN": 0.2,
+"ENS": 2.99,
+"LR": 0
+}
+},
+{
+"dep": "38",
+"name": "Isère",
+"k": 10,
+"choice": "RN",
+"real": {
+"NFP": 5.57,
+"RN": 3.15,
+"ENS": 0.37,
+"LR": 0.91
+},
+"scen": {
+"NFP": 3.31,
+"RN": 6.0,
+"ENS": 0.68,
+"LR": 0
+}
+},
+{
+"dep": "39",
+"name": "Jura",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0.07,
+"ENS": 0.98,
+"LR": 1.95
+},
+"scen": {
+"NFP": 0,
+"RN": 0.07,
+"ENS": 0.98,
+"LR": 1.95
+}
+},
+{
+"dep": "40",
+"name": "Landes",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 1.0,
+"RN": 0.11,
+"ENS": 1.88,
+"LR": 0
+},
+"scen": {
+"NFP": 1.0,
+"RN": 0.11,
+"ENS": 1.88,
+"LR": 0
+}
+},
+{
+"dep": "41",
+"name": "Loir-et-Cher",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0.98,
+"ENS": 1.97,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 0.98,
+"ENS": 1.97,
+"LR": 0
+}
+},
+{
+"dep": "42",
+"name": "Loire",
+"k": 6,
+"choice": "real",
+"real": {
+"NFP": 2.0,
+"RN": 0.17,
+"ENS": 0.92,
+"LR": 2.92
+},
+"scen": {
+"NFP": 2.0,
+"RN": 0.17,
+"ENS": 0.92,
+"LR": 2.92
+}
+},
+{
+"dep": "43",
+"name": "Haute-Loire",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0,
+"ENS": 0,
+"LR": 1.99
+},
+"scen": {
+"NFP": 0,
+"RN": 0,
+"ENS": 0,
+"LR": 1.99
+}
+},
+{
+"dep": "44",
+"name": "Loire-Atlantique",
+"k": 10,
+"choice": "real",
+"real": {
+"NFP": 6.36,
+"RN": 0.28,
+"ENS": 2.39,
+"LR": 0
+},
+"scen": {
+"NFP": 6.36,
+"RN": 0.28,
+"ENS": 2.39,
+"LR": 0
+}
+},
+{
+"dep": "45",
+"name": "Loiret",
+"k": 6,
+"choice": "LR",
+"real": {
+"NFP": 1.33,
+"RN": 2.42,
+"ENS": 1.61,
+"LR": 0
+},
+"scen": {
+"NFP": 2.37,
+"RN": 3.27,
+"ENS": 0.36,
+"LR": 0
+}
+},
+{
+"dep": "46",
+"name": "Lot",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 1.0,
+"RN": 0,
+"ENS": 0,
+"LR": 1.0
+},
+"scen": {
+"NFP": 1.0,
+"RN": 0,
+"ENS": 0,
+"LR": 1.0
+}
+},
+{
+"dep": "47",
+"name": "Lot-et-Garonne",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.04,
+"RN": 1.17,
+"ENS": 0.88,
+"LR": 0
+},
+"scen": {
+"NFP": 0.04,
+"RN": 1.17,
+"ENS": 0.88,
+"LR": 0
+}
+},
+{
+"dep": "48",
+"name": "Lozère",
+"k": 1,
+"choice": "real",
+"real": {
+"NFP": 0.8,
+"RN": 0.2,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0.8,
+"RN": 0.2,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "49",
+"name": "Maine-et-Loire",
+"k": 7,
+"choice": "real",
+"real": {
+"NFP": 0.23,
+"RN": 0.08,
+"ENS": 5.74,
+"LR": 0.94
+},
+"scen": {
+"NFP": 0.23,
+"RN": 0.08,
+"ENS": 5.74,
+"LR": 0.94
+}
+},
+{
+"dep": "50",
+"name": "Manche",
+"k": 4,
+"choice": "real",
+"real": {
+"NFP": 1.0,
+"RN": 0.03,
+"ENS": 1.98,
+"LR": 0
+},
+"scen": {
+"NFP": 1.0,
+"RN": 0.03,
+"ENS": 1.98,
+"LR": 0
+}
+},
+{
+"dep": "51",
+"name": "Marne",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0.77,
+"ENS": 3.36,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 0.77,
+"ENS": 3.36,
+"LR": 0
+}
+},
+{
+"dep": "52",
+"name": "Haute-Marne",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 1.81,
+"ENS": 0.19,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 1.81,
+"ENS": 0.19,
+"LR": 0
+}
+},
+{
+"dep": "53",
+"name": "Mayenne",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 1.0,
+"RN": 0,
+"ENS": 2.0,
+"LR": 0
+},
+"scen": {
+"NFP": 1.0,
+"RN": 0,
+"ENS": 2.0,
+"LR": 0
+}
+},
+{
+"dep": "54",
+"name": "Meurthe-et-Moselle",
+"k": 6,
+"choice": "real",
+"real": {
+"NFP": 2.98,
+"RN": 2.01,
+"ENS": 0.12,
+"LR": 0.85
+},
+"scen": {
+"NFP": 2.98,
+"RN": 2.01,
+"ENS": 0.12,
+"LR": 0.85
+}
+},
+{
+"dep": "55",
+"name": "Meuse",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 1.73,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 1.73,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "56",
+"name": "Morbihan",
+"k": 6,
+"choice": "real",
+"real": {
+"NFP": 0.67,
+"RN": 0.09,
+"ENS": 4.23,
+"LR": 0
+},
+"scen": {
+"NFP": 0.67,
+"RN": 0.09,
+"ENS": 4.23,
+"LR": 0
+}
+},
+{
+"dep": "57",
+"name": "Moselle",
+"k": 9,
+"choice": "real",
+"real": {
+"NFP": 0.03,
+"RN": 3.96,
+"ENS": 3.78,
+"LR": 1.22
+},
+"scen": {
+"NFP": 0.03,
+"RN": 3.96,
+"ENS": 3.78,
+"LR": 1.22
+}
+},
+{
+"dep": "58",
+"name": "Nièvre",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0.02,
+"RN": 1.06,
+"ENS": 0.92,
+"LR": 0
+},
+"scen": {
+"NFP": 0.02,
+"RN": 1.06,
+"ENS": 0.92,
+"LR": 0
+}
+},
+{
+"dep": "59",
+"name": "Nord",
+"k": 21,
+"choice": "real",
+"real": {
+"NFP": 4.29,
+"RN": 8.96,
+"ENS": 5.42,
+"LR": 0
+},
+"scen": {
+"NFP": 4.29,
+"RN": 8.96,
+"ENS": 5.42,
+"LR": 0
+}
+},
+{
+"dep": "60",
+"name": "Oise",
+"k": 7,
+"choice": "real",
+"real": {
+"NFP": 0.33,
+"RN": 5.25,
+"ENS": 0.96,
+"LR": 0.45
+},
+"scen": {
+"NFP": 0.33,
+"RN": 5.25,
+"ENS": 0.96,
+"LR": 0.45
+}
+},
+{
+"dep": "61",
+"name": "Orne",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.78,
+"RN": 0.23,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0.78,
+"RN": 0.23,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "62",
+"name": "Pas-de-Calais",
+"k": 12,
+"choice": "real",
+"real": {
+"NFP": 0.22,
+"RN": 9.51,
+"ENS": 1.95,
+"LR": 0.32
+},
+"scen": {
+"NFP": 0.22,
+"RN": 9.51,
+"ENS": 1.95,
+"LR": 0.32
+}
+},
+{
+"dep": "63",
+"name": "Puy-de-Dôme",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 3.21,
+"RN": 0.06,
+"ENS": 1.72,
+"LR": 0
+},
+"scen": {
+"NFP": 3.21,
+"RN": 0.06,
+"ENS": 1.72,
+"LR": 0
+}
+},
+{
+"dep": "64",
+"name": "Pyrénées-Atlantiques",
+"k": 6,
+"choice": "real",
+"real": {
+"NFP": 2.41,
+"RN": 0.05,
+"ENS": 2.53,
+"LR": 0
+},
+"scen": {
+"NFP": 2.41,
+"RN": 0.05,
+"ENS": 2.53,
+"LR": 0
+}
+},
+{
+"dep": "65",
+"name": "Hautes-Pyrénées",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 1.48,
+"RN": 0.52,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 1.48,
+"RN": 0.52,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "66",
+"name": "Pyrénées-Orientales",
+"k": 4,
+"choice": "real",
+"real": {
+"NFP": 0.03,
+"RN": 3.97,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0.03,
+"RN": 3.97,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "67",
+"name": "Bas-Rhin",
+"k": 9,
+"choice": "real",
+"real": {
+"NFP": 2.94,
+"RN": 1.27,
+"ENS": 3.81,
+"LR": 0.97
+},
+"scen": {
+"NFP": 2.94,
+"RN": 1.27,
+"ENS": 3.81,
+"LR": 0.97
+}
+},
+{
+"dep": "68",
+"name": "Haut-Rhin",
+"k": 6,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0.99,
+"ENS": 4.42,
+"LR": 0.59
+},
+"scen": {
+"NFP": 0,
+"RN": 0.99,
+"ENS": 4.42,
+"LR": 0.59
+}
+},
+{
+"dep": "69",
+"name": "Rhône",
+"k": 14,
+"choice": "ENS",
+"real": {
+"NFP": 7.12,
+"RN": 1.14,
+"ENS": 4.43,
+"LR": 1.31
+},
+"scen": {
+"NFP": 3.74,
+"RN": 0.25,
+"ENS": 9.08,
+"LR": 0.92
+}
+},
+{
+"dep": "70",
+"name": "Haute-Saône",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 1.86,
+"ENS": 0.14,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 1.86,
+"ENS": 0.14,
+"LR": 0
+}
+},
+{
+"dep": "71",
+"name": "Saône-et-Loire",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 0.09,
+"RN": 2.57,
+"ENS": 1.29,
+"LR": 1.0
+},
+"scen": {
+"NFP": 0.09,
+"RN": 2.57,
+"ENS": 1.29,
+"LR": 1.0
+}
+},
+{
+"dep": "72",
+"name": "Sarthe",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 1.25,
+"RN": 1.06,
+"ENS": 2.68,
+"LR": 0
+},
+"scen": {
+"NFP": 1.25,
+"RN": 1.06,
+"ENS": 2.68,
+"LR": 0
+}
+},
+{
+"dep": "73",
+"name": "Savoie",
+"k": 4,
+"choice": "real",
+"real": {
+"NFP": 0.99,
+"RN": 0.06,
+"ENS": 0.98,
+"LR": 1.97
+},
+"scen": {
+"NFP": 0.99,
+"RN": 0.06,
+"ENS": 0.98,
+"LR": 1.97
+}
+},
+{
+"dep": "74",
+"name": "Haute-Savoie",
+"k": 6,
+"choice": "real",
+"real": {
+"NFP": 0.01,
+"RN": 0.09,
+"ENS": 3.97,
+"LR": 0.98
+},
+"scen": {
+"NFP": 0.01,
+"RN": 0.09,
+"ENS": 3.97,
+"LR": 0.98
+}
+},
+{
+"dep": "75",
+"name": "Paris",
+"k": 18,
+"choice": "ENS",
+"real": {
+"NFP": 10.58,
+"RN": 0,
+"ENS": 6.35,
+"LR": 0
+},
+"scen": {
+"NFP": 6.99,
+"RN": 0,
+"ENS": 11.0,
+"LR": 0
+}
+},
+{
+"dep": "76",
+"name": "Seine-Maritime",
+"k": 10,
+"choice": "real",
+"real": {
+"NFP": 4.3,
+"RN": 2.9,
+"ENS": 2.79,
+"LR": 0
+},
+"scen": {
+"NFP": 4.3,
+"RN": 2.9,
+"ENS": 2.79,
+"LR": 0
+}
+},
+{
+"dep": "77",
+"name": "Seine-et-Marne",
+"k": 11,
+"choice": "RN",
+"real": {
+"NFP": 5.6,
+"RN": 2.09,
+"ENS": 2.11,
+"LR": 1.2
+},
+"scen": {
+"NFP": 3.63,
+"RN": 6.69,
+"ENS": 0.68,
+"LR": 0
+}
+},
+{
+"dep": "78",
+"name": "Yvelines",
+"k": 12,
+"choice": "real",
+"real": {
+"NFP": 3.41,
+"RN": 0.18,
+"ENS": 8.4,
+"LR": 0
+},
+"scen": {
+"NFP": 3.41,
+"RN": 0.18,
+"ENS": 8.4,
+"LR": 0
+}
+},
+{
+"dep": "79",
+"name": "Deux-Sèvres",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.09,
+"RN": 0.3,
+"ENS": 1.0,
+"LR": 0
+},
+"scen": {
+"NFP": 0.09,
+"RN": 0.3,
+"ENS": 1.0,
+"LR": 0
+}
+},
+{
+"dep": "80",
+"name": "Somme",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 1.6,
+"RN": 3.15,
+"ENS": 0.11,
+"LR": 0.14
+},
+"scen": {
+"NFP": 1.6,
+"RN": 3.15,
+"ENS": 0.11,
+"LR": 0.14
+}
+},
+{
+"dep": "81",
+"name": "Tarn",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.71,
+"RN": 0.5,
+"ENS": 0.87,
+"LR": 0
+},
+"scen": {
+"NFP": 0.71,
+"RN": 0.5,
+"ENS": 0.87,
+"LR": 0
+}
+},
+{
+"dep": "82",
+"name": "Tarn-et-Garonne",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0.62,
+"RN": 1.38,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 0.62,
+"RN": 1.38,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "83",
+"name": "Var",
+"k": 8,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 7.04,
+"ENS": 0.96,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 7.04,
+"ENS": 0.96,
+"LR": 0
+}
+},
+{
+"dep": "84",
+"name": "Vaucluse",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 1.0,
+"RN": 3.99,
+"ENS": 0.01,
+"LR": 0
+},
+"scen": {
+"NFP": 1.0,
+"RN": 3.99,
+"ENS": 0.01,
+"LR": 0
+}
+},
+{
+"dep": "85",
+"name": "Vendée",
+"k": 5,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 0.06,
+"ENS": 3.94,
+"LR": 0
+},
+"scen": {
+"NFP": 0,
+"RN": 0.06,
+"ENS": 3.94,
+"LR": 0
+}
+},
+{
+"dep": "86",
+"name": "Vienne",
+"k": 4,
+"choice": "real",
+"real": {
+"NFP": 1.03,
+"RN": 0.14,
+"ENS": 2.83,
+"LR": 0
+},
+"scen": {
+"NFP": 1.03,
+"RN": 0.14,
+"ENS": 2.83,
+"LR": 0
+}
+},
+{
+"dep": "87",
+"name": "Haute-Vienne",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 2.9,
+"RN": 0.1,
+"ENS": 0,
+"LR": 0
+},
+"scen": {
+"NFP": 2.9,
+"RN": 0.1,
+"ENS": 0,
+"LR": 0
+}
+},
+{
+"dep": "88",
+"name": "Vosges",
+"k": 4,
+"choice": "real",
+"real": {
+"NFP": 0,
+"RN": 1.51,
+"ENS": 0.22,
+"LR": 0.27
+},
+"scen": {
+"NFP": 0,
+"RN": 1.51,
+"ENS": 0.22,
+"LR": 0.27
+}
+},
+{
+"dep": "89",
+"name": "Yonne",
+"k": 3,
+"choice": "real",
+"real": {
+"NFP": 0.08,
+"RN": 2.31,
+"ENS": 0.61,
+"LR": 0
+},
+"scen": {
+"NFP": 0.08,
+"RN": 2.31,
+"ENS": 0.61,
+"LR": 0
+}
+},
+{
+"dep": "90",
+"name": "Territoire de Belfort",
+"k": 2,
+"choice": "real",
+"real": {
+"NFP": 0.5,
+"RN": 0.58,
+"ENS": 0,
+"LR": 0.91
+},
+"scen": {
+"NFP": 0.5,
+"RN": 0.58,
+"ENS": 0,
+"LR": 0.91
+}
+},
+{
+"dep": "91",
+"name": "Essonne",
+"k": 10,
+"choice": "real",
+"real": {
+"NFP": 6.33,
+"RN": 0.99,
+"ENS": 1.97,
+"LR": 0
+},
+"scen": {
+"NFP": 6.33,
+"RN": 0.99,
+"ENS": 1.97,
+"LR": 0
+}
+},
+{
+"dep": "92",
+"name": "Hauts-de-Seine",
+"k": 13,
+"choice": "real",
+"real": {
+"NFP": 3.06,
+"RN": 0,
+"ENS": 6.98,
+"LR": 2.95
+},
+"scen": {
+"NFP": 3.06,
+"RN": 0,
+"ENS": 6.98,
+"LR": 2.95
+}
+},
+{
+"dep": "93",
+"name": "Seine-Saint-Denis",
+"k": 12,
+"choice": "real",
+"real": {
+"NFP": 11.29,
+"RN": 0,
+"ENS": 0.07,
+"LR": 0
+},
+"scen": {
+"NFP": 11.29,
+"RN": 0,
+"ENS": 0.07,
+"LR": 0
+}
+},
+{
+"dep": "94",
+"name": "Val-de-Marne",
+"k": 11,
+"choice": "real",
+"real": {
+"NFP": 6.89,
+"RN": 0.01,
+"ENS": 1.77,
+"LR": 1.49
+},
+"scen": {
+"NFP": 6.89,
+"RN": 0.01,
+"ENS": 1.77,
+"LR": 1.49
+}
+},
+{
+"dep": "95",
+"name": "Val-d'Oise",
+"k": 10,
+"choice": "real",
+"real": {
+"NFP": 9.52,
+"RN": 0.18,
+"ENS": 0.29,
+"LR": 0
+},
+"scen": {
+"NFP": 9.52,
+"RN": 0.18,
+"ENS": 0.29,
+"LR": 0
+}
+}
+]
+}

@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trois blocs à égalité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Mise en page : bandeau de synthèse, puis deux cartes côte à côte (réel | optimisé), puis tableaux. */
+:root {
+  --bg: #f4f5f7; --panel: #ffffff; --ink: #151821; --muted: #5d6474; --line: #dfe2e8; --line-strong: #b9bec9;
+  --accent: #2b3a67; --halo: rgba(255,255,255,.92); --gain: #13795b; --loss: #b3261e;
+  --f-NFP: #d7263d; --f-RN: #1f2f5c; --f-ENS: #f0b400; --f-LR: #3e8ed0; --f-DVD: #92b9dd; --f-DVG: #e98ea3;
+  --f-DVC: #f3d98b; --f-REG: #5e9e6b; --f-EXD: #5b4636; --f-ECO: #49a35a; --f-other: #a2a7b0;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12141a; --panel: #1a1d25; --ink: #e8eaf0; --muted: #9aa1b2; --line: #2b2f3a; --line-strong: #444a59;
+  --accent: #9fb2ff; --halo: rgba(18,20,26,.9); --gain: #4cc49a; --loss: #ff7b72;
+  --f-RN: #5a6fc4; --f-EXD: #8d735f; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #12141a; --panel: #1a1d25; --ink: #e8eaf0; --muted: #9aa1b2; --line: #2b2f3a; --line-strong: #444a59;
+  --accent: #9fb2ff; --halo: rgba(18,20,26,.9); --gain: #4cc49a; --loss: #ff7b72;
+  --f-RN: #5a6fc4; --f-EXD: #8d735f; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 48px; }
+.wrap { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.wrap > * { min-width: 0; }
+.field { min-width: 0; max-width: 100%; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; letter-spacing: -.01em; }
+h2 { font-size: 18px; font-weight: 700; }
+.lede { color: var(--muted); max-width: 72ch; margin: 6px 0 0; }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.eyebrow { font: 600 11px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* page scénario */
+.back { color: var(--accent); font-weight: 600; text-decoration: none; font-size: 13px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 10px; min-width: 0; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 4px; }
+.kpi .name { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.kpi .big { font: 700 24px/1.1 var(--font-display); display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.kpi .arrow { color: var(--muted); font-weight: 500; font-size: 17px; }
+.swatch { width: 11px; height: 11px; border-radius: 3px; flex: none; display: inline-block; }
+.delta { font: 500 12px var(--font-data); color: var(--muted); }
+.delta.pos { color: var(--gain); } .delta.neg { color: var(--loss); }
+.hemis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 720px) { .hemis { grid-template-columns: minmax(0, 1fr); } }
+.hemi { display: grid; gap: 8px; min-width: 0; align-content: start; }
+.hemi h3 { margin: 0; font: 600 14px var(--font-body); text-align: center; }
+.hemi svg { width: 100%; max-width: 440px; height: auto; display: block; margin: 0 auto; }
+.hemi svg circle { stroke: var(--panel); stroke-width: .6; }
+.hemi svg g.party:hover circle { stroke: var(--ink); stroke-width: 1; }
+.hemi .total { font: 700 14px var(--font-data); fill: var(--ink); }
+.hemi .totlab { font: 500 9px var(--font-body); fill: var(--muted); }
+.hleg { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; font-size: 12.5px; }
+.hleg span.it { display: inline-flex; align-items: center; gap: 6px; }
+.hleg .num { font: 600 12.5px var(--font-data); }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 1240px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+svg.map { width: 100%; max-width: 820px; margin: 0 auto; height: auto; display: block; }
+svg.map path.d { stroke: var(--panel); stroke-width: .5; vector-effect: non-scaling-stroke; stroke-linejoin: round; fill-rule: evenodd; }
+svg.map path.d.hover { stroke: var(--ink); stroke-width: 2; }
+svg.map path.dep { fill: none; stroke: var(--ink); stroke-opacity: .5; stroke-width: .8; vector-effect: non-scaling-stroke; pointer-events: none; }
+svg.map path.chg { fill: none; stroke: var(--ink); stroke-width: 2.6; vector-effect: non-scaling-stroke; pointer-events: none; }
+svg.map g.dim path.d { fill-opacity: .28 !important; }
+svg.map .insetbg { fill: var(--panel); stroke: var(--line-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font: 600 11px var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+td.n, th.n { text-align: right; font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+tr.tot td { font-weight: 700; border-top: 2px solid var(--line-strong); }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+.note { font-size: 12px; color: var(--muted); }
+.tip { position: fixed; z-index: 20; pointer-events: none; background: var(--panel); color: var(--ink); border: 1px solid var(--line-strong); border-radius: 8px; padding: 10px 12px; box-shadow: 0 6px 24px rgba(0,0,0,.18); min-width: 200px; max-width: 280px; font-size: 13px; }
+.tip h3 { font-size: 14px; margin-bottom: 4px; } .tip .meta { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+.tip .row { display: flex; justify-content: space-between; gap: 12px; }
+.tip .row .num { font-family: var(--font-data); }
+.toggle { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; cursor: pointer; user-select: none; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <a class="back" href="index.html">← Retour aux cartes</a>
+    <div class="eyebrow" style="margin-top:14px">Législatives 2024 · scénario · 2nd tour</div>
+    <h1>Trois blocs à égalité</h1>
+    <p class="lede" id="lede"></p>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="card">
+    <div class="hemis" id="hemis"></div>
+    <div class="note">Les 539 circonscriptions de métropole, en sièges attendus au second tour arrondis à l'entier (plus fort reste). Les 38 sièges d'outre-mer et des Français de l'étranger ne sont pas redécoupés ; la majorité absolue de l'Assemblée complète est de 289 sièges sur 577.</div>
+  </section>
+
+  <section class="cols">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline">
+        <h2>La carte du scénario</h2>
+        <label class="toggle"><input type="checkbox" id="dim" checked> Estomper les départements inchangés</label>
+      </div>
+      <div id="map"></div>
+      <div class="note">Contour épais : département redécoupé. Couleur : vainqueur le plus probable au second tour ; plus elle est pâle, plus l'issue est incertaine. Encart : Paris et petite couronne.</div>
+    </div>
+    <div class="card">
+      <h2>Les départements redécoupés</h2>
+      <div class="tbl"><table id="tbl"></table></div>
+      <div class="note">Sièges attendus, découpage réel → découpage retenu. Chaque découpage retenu est celui calculé pour maximiser les sièges de la force indiquée ; il respecte les mêmes règles (circonscriptions d'un seul tenant, ±20 % d'inscrits autour de la moyenne du département).</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Comment ce scénario est construit</h2>
+    <p style="margin:0;max-width:80ch">Pour chacun des 96 départements, on dispose de cinq découpages : le découpage réel et les quatre découpages optimisés (pour le NFP, le RN, Ensemble et LR). On choisit un découpage par département de sorte que le NFP, le RN et Ensemble obtiennent le même nombre de sièges attendus, à <span id="tol"></span> siège près, en modifiant <b>le moins de départements possible</b> (programme linéaire en nombres entiers). D'autres combinaisons atteignent aussi l'égalité, avec un niveau commun allant d'environ 148 à 175 sièges chacun ; celle-ci est la plus proche de la carte actuelle.</p>
+    <p class="note" style="margin:0">Il s'agit de sièges <i>attendus</i> d'après le modèle de second tour (qualifications, désistements probables, reports de voix) : dans un scénario donné, le partage serait proche de l'égalité sans l'être forcément à un siège près. Au critère « en tête au premier tour », les découpages existants ne permettent pas l'égalité : le RN reste au moins à 207 circonscriptions en tête.</p>
+  </section>
+</main>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const svgNS = "http://www.w3.org/2000/svg";
+const KNOWN = ["NFP","RN","ENS","LR","DVD","DVG","DVC","REG","EXD","ECO"];
+const col = f => `var(--f-${KNOWN.includes(f) ? f : "other"})`;
+const NAMES = { NFP: "Nouveau Front populaire", RN: "RN et alliés", ENS: "Ensemble", LR: "Les Républicains", real: "Réel" };
+const SEAT_ORDER = ["NFP", "ECO", "DVG", "REG", "OTHER", "ENS", "DVC", "LR", "DVD", "RN", "EXD"];
+const SEAT_NAMES = { NFP: "NFP", ECO: "Écologistes", DVG: "Divers gauche", REG: "Régionalistes", OTHER: "Divers", ENS: "Ensemble",
+  DVC: "Divers centre", LR: "LR", DVD: "Divers droite", RN: "RN et alliés", EXD: "Extrême droite (autre)" };
+const N_SEATS = 539;
+const f1 = x => Number(x).toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const dl = d => `<span class="delta ${d > 0.05 ? "pos" : d < -0.05 ? "neg" : ""}">${d > 0.05 ? "+" : d < -0.05 ? "−" : "±"}${f1(Math.abs(d))}</span>`;
+
+function toSeats(obj) {
+  const keys = Object.keys(obj).filter(k => obj[k] > 0);
+  const tot = keys.reduce((s, k) => s + obj[k], 0) || 1;
+  const q = keys.map(k => [k, obj[k] * N_SEATS / tot]);
+  const out = Object.fromEntries(q.map(([k, v]) => [k, Math.floor(v)]));
+  let left = N_SEATS - Object.values(out).reduce((a, b) => a + b, 0);
+  q.sort((a, b) => (b[1] % 1) - (a[1] % 1));
+  for (let i = 0; left > 0; i = (i + 1) % q.length, left--) out[q[i][0]]++;
+  return out;
+}
+function seatPositions() {
+  const R = 12, r0 = 0.42, radii = [...Array(R)].map((_, i) => r0 + i * (1 - r0) / (R - 1));
+  const sum = radii.reduce((a, b) => a + b, 0);
+  const counts = radii.map(r => Math.floor(N_SEATS * r / sum));
+  let left = N_SEATS - counts.reduce((a, b) => a + b, 0);
+  for (let i = R - 1; left > 0; i = (i - 1 + R) % R, left--) counts[i]++;
+  const pos = [];
+  radii.forEach((r, i) => { const n = counts[i];
+    for (let k = 0; k < n; k++) { const a = Math.PI * (1 - k / (n - 1)); pos.push({ a, x: r * Math.cos(a), y: r * Math.sin(a) }); } });
+  pos.sort((p, q) => q.a - p.a || Math.hypot(p.x, p.y) - Math.hypot(q.x, q.y));
+  return { pos, dot: 0.5 * (1 - r0) / (R - 1) * 0.86 };
+}
+function hemiSVG(seats, label) {
+  const { pos, dot } = seatPositions(), S = 200, cx = 210, cy = 205;
+  const order = [...SEAT_ORDER, ...Object.keys(seats).filter(k => !SEAT_ORDER.includes(k))];
+  let idx = 0, g = "";
+  for (const f of order) {
+    const n = seats[f] || 0; if (!n) continue;
+    g += `<g class="party"><title>${SEAT_NAMES[f] || f} : ${n} sièges</title>`;
+    for (let k = 0; k < n; k++, idx++) { const p = pos[idx];
+      g += `<circle cx="${(cx + p.x * S).toFixed(1)}" cy="${(cy - p.y * S).toFixed(1)}" r="${(dot * S).toFixed(2)}" fill="${col(f)}"/>`; }
+    g += "</g>";
+  }
+  const top = ["NFP", "RN", "ENS"].map(f => seats[f] || 0).join(" · ");
+  return `<svg viewBox="0 0 420 215" role="img" aria-label="${label}">${g}
+    <text class="total" x="${cx}" y="${cy - 22}" text-anchor="middle">${top}</text>
+    <text class="totlab" x="${cx}" y="${cy - 8}" text-anchor="middle">NFP · RN · ENS</text></svg>`;
+}
+function hemiLegend(seats, ref) {
+  const order = [...SEAT_ORDER, ...Object.keys(seats).filter(k => !SEAT_ORDER.includes(k))];
+  return `<div class="hleg">` + order.filter(f => seats[f] || (ref && ref[f])).map(f => {
+    const n = seats[f] || 0, d = ref ? n - (ref[f] || 0) : 0;
+    return `<span class="it"><span class="swatch" style="background:${col(f)}"></span>${SEAT_NAMES[f] || f} <span class="num">${n}</span>${
+      d ? `<span class="delta ${d > 0 ? "pos" : "neg"}">${d > 0 ? "+" : "−"}${Math.abs(d)}</span>` : ""}</span>`;
+  }).join("") + `</div>`;
+}
+
+function el(tag, attrs = {}, parent) {
+  const e = document.createElementNS(svgNS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+const alphaOf = d => 0.25 + 0.75 * Math.min(Math.max((d.pw - 0.5) / 0.45, 0), 1);
+function tip(e, d, choice) {
+  const t = $("tip");
+  const ps = Object.entries(d.p || {}).sort((a, b) => b[1] - a[1]).slice(0, 3)
+    .map(([f, v]) => `<div class="row"><span class="chip"><span class="swatch" style="background:${col(f)}"></span>${f}</span><span class="num">${Math.round(100 * v)} %</span></div>`).join("");
+  t.innerHTML = `<h3>${d.dep} · ${d.id}</h3><div class="meta">${choice === "real" ? "Découpage réel" : `Découpage optimisé pour ${NAMES[choice]}`} · ${d.inscrits.toLocaleString("fr-FR")} inscrits</div>${ps}`;
+  t.hidden = false;
+  const w = t.offsetWidth, h = t.offsetHeight;
+  t.style.left = Math.min(e.clientX + 14, innerWidth - w - 8) + "px";
+  t.style.top = Math.min(e.clientY + 14, innerHeight - h - 8) + "px";
+}
+function paths(parent, items, choiceOf, key, pk) {
+  for (const d of items) {
+    if (!d[pk]) continue;
+    const p = el("path", { d: d[pk], class: "d" }, parent);
+    p.style.fill = col(d.w2); p.style.fillOpacity = alphaOf(d).toFixed(2);
+    p.dataset.key = `${d.dep}:${d.id}`;
+    p.addEventListener("mousemove", e => tip(e, d, choiceOf[d.dep]));
+    p.addEventListener("mouseenter", () => document.querySelectorAll(`[data-key="${CSS.escape(p.dataset.key)}"]`).forEach(x => x.classList.add("hover")));
+    p.addEventListener("mouseleave", () => { $("tip").hidden = true; document.querySelectorAll(".hover").forEach(x => x.classList.remove("hover")); });
+  }
+}
+function drawMap(fr, eg) {
+  const choiceOf = Object.fromEntries(eg.departements.map(d => [d.dep, d.choice]));
+  const changed = new Set(eg.departements.filter(d => d.choice !== "real").map(d => d.dep));
+  const items = [];
+  for (const d of eg.departements) items.push(...fr.layers[d.choice].filter(x => x.dep === d.dep));
+  const { width: W, height: H } = fr.main;
+  const svg = el("svg", { viewBox: `-5 -5 ${W + 10} ${H + 10}`, class: "map", role: "img", "aria-label": "Carte du scénario" });
+  const gDim = el("g", { class: "dim" }, svg), gOn = el("g", {}, svg);
+  paths(gDim, items.filter(d => !changed.has(d.dep)), choiceOf, "m", "path");
+  paths(gOn, items.filter(d => changed.has(d.dep)), choiceOf, "m", "path");
+  for (const d of fr.departements) el("path", { d: d.path, class: changed.has(d.dep) ? "chg" : "dep" }, svg);
+  const iw = W * 0.27, ih = iw * fr.inset.height / fr.inset.width;
+  el("rect", { x: 0, y: 0, width: iw, height: ih, class: "insetbg", rx: 4 }, svg);
+  const inner = el("svg", { x: 4, y: 4, width: iw - 8, height: ih - 8, viewBox: `-10 -10 ${fr.inset.width + 20} ${fr.inset.height + 20}` }, svg);
+  const iDim = el("g", { class: "dim" }, inner), iOn = el("g", {}, inner);
+  const ins = items.filter(d => fr.inset.deps.includes(d.dep));
+  paths(iDim, ins.filter(d => !changed.has(d.dep)), choiceOf, "i", "ipath");
+  paths(iOn, ins.filter(d => changed.has(d.dep)), choiceOf, "i", "ipath");
+  for (const d of fr.insetDepartements) el("path", { d: d.path, class: changed.has(d.dep) ? "chg" : "dep" }, inner);
+  $("map").innerHTML = ""; $("map").appendChild(svg);
+  const setDim = () => svg.querySelectorAll("g.dim, g.nodim").forEach(g => g.setAttribute("class", $("dim").checked ? "dim" : "nodim"));
+  $("dim").onchange = setDim; setDim();
+}
+
+(async function () {
+  const [fr, eg] = await Promise.all(["france.json", "egalite.json"].map(f => fetch(`data_t2/${f}`, { cache: "no-cache" }).then(r => r.json())));
+  const ch = eg.departements.filter(d => d.choice !== "real");
+  $("tol").textContent = f1(eg.tol);
+  $("lede").innerHTML = `Avec les mêmes voix qu'en 2024, il suffit de redécouper <b>${ch.length} départements sur 96</b>, en réutilisant des découpages déjà calculés, pour que le Nouveau Front populaire, le RN et Ensemble obtiennent chacun environ <b>${Math.round(eg.scen.NFP)} sièges attendus</b> au second tour.`;
+  $("kpis").innerHTML = ["NFP", "RN", "ENS", "LR"].map(f => `<div class="kpi"><div class="name"><span class="swatch" style="background:${col(f)}"></span>${NAMES[f]}</div>
+    <div class="big"><span class="num">${f1(eg.real[f])}</span><span class="arrow">→</span><span class="num">${f1(eg.scen[f])}</span>${dl(eg.scen[f] - eg.real[f])}</div>
+    <div class="note">sièges attendus sur 539 · réel → scénario</div></div>`).join("");
+  const sr = toSeats(eg.real), ss = toSeats(eg.scen);
+  $("hemis").innerHTML = `<div class="hemi"><h3>Découpage réel</h3>${hemiSVG(sr, "Assemblée, découpage réel")}${hemiLegend(sr)}</div>
+    <div class="hemi"><h3>Scénario « trois blocs à égalité »</h3>${hemiSVG(ss, "Assemblée, scénario")}${hemiLegend(ss, sr)}</div>`;
+  const F = ["NFP", "RN", "ENS", "LR"];
+  const sum = (k, f) => ch.reduce((s, d) => s + d[k][f], 0);
+  $("tbl").innerHTML = `<thead><tr><th>Département</th><th>Découpage retenu</th>${F.map(f => `<th class="n">${f}</th>`).join("")}</tr></thead><tbody>` +
+    ch.map(d => `<tr><td>${d.dep} · ${d.name} <span class="note">(${d.k})</span></td><td><span class="chip"><span class="swatch" style="background:${col(d.choice)}"></span>optimisé ${d.choice}</span></td>` +
+      F.map(f => `<td class="n">${f1(d.real[f])} → ${f1(d.scen[f])}</td>`).join("") + `</tr>`).join("") +
+    `<tr class="tot"><td>Total</td><td></td>${F.map(f => `<td class="n">${dl(sum("scen", f) - sum("real", f))}</td>`).join("")}</tr></tbody>`;
+  drawMap(fr, eg);
+})();
+</script>
+</body>
+</html>
