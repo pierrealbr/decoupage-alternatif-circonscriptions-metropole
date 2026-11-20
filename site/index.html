@@ -12,7 +12,7 @@
   --bg: #f4f5f7; --panel: #ffffff; --ink: #151821; --muted: #5d6474; --line: #dfe2e8; --line-strong: #b9bec9;
   --accent: #2b3a67; --halo: rgba(255,255,255,.92); --gain: #13795b; --loss: #b3261e;
   --f-NFP: #d7263d; --f-RN: #1f2f5c; --f-ENS: #f0b400; --f-LR: #3e8ed0; --f-DVD: #92b9dd; --f-DVG: #e98ea3;
-  --f-DVC: #f3d98b; --f-REG: #5e9e6b; --f-EXD: #5b4636; --f-ECO: #49a35a; --f-other: #a2a7b0;
+  --f-DVC: #f3d98b; --f-REG: #5e9e6b; --f-EXD: #5b4636; --f-ECO: #49a35a; --f-EXG: #8e1b2c; --f-other: #a2a7b0;
   --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-data: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -21,11 +21,11 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #12141a; --panel: #1a1d25; --ink: #e8eaf0; --muted: #9aa1b2; --line: #2b2f3a; --line-strong: #444a59;
   --accent: #9fb2ff; --halo: rgba(18,20,26,.9); --gain: #4cc49a; --loss: #ff7b72;
-  --f-RN: #5a6fc4; --f-EXD: #8d735f; color-scheme: dark; } }
+  --f-RN: #5a6fc4; --f-EXD: #8d735f; --f-EXG: #c4485a; color-scheme: dark; } }
 :root[data-theme="dark"] {
   --bg: #12141a; --panel: #1a1d25; --ink: #e8eaf0; --muted: #9aa1b2; --line: #2b2f3a; --line-strong: #444a59;
   --accent: #9fb2ff; --halo: rgba(18,20,26,.9); --gain: #4cc49a; --loss: #ff7b72;
-  --f-RN: #5a6fc4; --f-EXD: #8d735f; color-scheme: dark; }
+  --f-RN: #5a6fc4; --f-EXD: #8d735f; --f-EXG: #c4485a; color-scheme: dark; }
 
 * { box-sizing: border-box; }
 html { background: var(--bg); }
@@ -55,7 +55,8 @@ h2 { font-size: 18px; font-weight: 700; }
 .tile .foot { color: var(--muted); font-size: 12px; }
 /* hémicycle */
 .hemicard { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-top: 12px; display: grid; gap: 10px; }
-.hemis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.hemis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 1000px) { .hemis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 720px) { .hemis { grid-template-columns: minmax(0, 1fr); } }
 .hemi { display: grid; gap: 8px; min-width: 0; align-content: start; }
 .hemi h3 { margin: 0; font: 600 14px var(--font-body); text-align: center; }
@@ -68,6 +69,17 @@ h2 { font-size: 18px; font-weight: 700; }
 .hleg span.it { display: inline-flex; align-items: center; gap: 6px; }
 .hleg .num { font: 600 12.5px var(--font-data); font-variant-numeric: tabular-nums; }
 .hleg .delta { font-size: 11.5px; }
+.hemi.prop h3 { color: var(--muted); }
+.cmp { overflow-x: auto; }
+.cmp table { max-width: 860px; margin: 0 auto; }
+.cmp th.cur, .cmp td.cur { background: color-mix(in srgb, var(--accent) 9%, transparent); }
+.cmp td .swatch { margin-right: 6px; vertical-align: -1px; display: inline-block; }
+@media (max-width: 600px) {
+  .cmp th, .cmp td { padding: 6px 3px; font-size: 11.5px; }
+  .cmp td:first-child { white-space: normal; }
+  .cmp th { letter-spacing: 0; font-size: 10px; white-space: normal; }
+  .cmp td .delta { display: block; }
+}
 .summary { align-items: start; }
 .progress { color: var(--muted); font-size: 13px; }
 .bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; margin-top: 6px; max-width: 320px; }
@@ -224,7 +236,7 @@ th.sortable { cursor: pointer; }
 <script>
 const TARGETS = ["NFP", "RN", "ENS", "LR"];
 const NAMES = { NFP: "Nouveau Front populaire", RN: "RN et alliés", ENS: "Ensemble", LR: "Les Républicains" };
-const KNOWN = ["NFP","RN","ENS","LR","DVD","DVG","DVC","REG","EXD","ECO"];
+const KNOWN = ["NFP","RN","ENS","LR","DVD","DVG","DVC","REG","EXD","ECO","EXG"];
 const col = f => `var(--f-${KNOWN.includes(f) ? f : "other"})`;
 const svgNS = "http://www.w3.org/2000/svg";
 const state = { dep: null, force: "NFP", mode: "t2", indexes: {}, cache: { t1: {}, t2: {} }, france: {}, sort: "gain" };
@@ -305,8 +317,8 @@ function renderSummary() {
 }
 
 // Hémicycle : composition des 539 sièges métropolitains, découpage réel contre découpage optimisé pour la force choisie
-const SEAT_ORDER = ["NFP", "ECO", "DVG", "REG", "OTHER", "ENS", "DVC", "LR", "DVD", "RN", "EXD"];
-const SEAT_NAMES = { NFP: "NFP", ECO: "Écologistes", DVG: "Divers gauche", REG: "Régionalistes", OTHER: "Divers", ENS: "Ensemble",
+const SEAT_ORDER = ["EXG", "NFP", "ECO", "DVG", "REG", "OTHER", "ENS", "DVC", "LR", "DVD", "RN", "EXD"];
+const SEAT_NAMES = { EXG: "Extrême gauche", NFP: "NFP", ECO: "Écologistes", DVG: "Divers gauche", REG: "Régionalistes", OTHER: "Divers", ENS: "Ensemble",
   DVC: "Divers centre", LR: "LR", DVD: "Divers droite", RN: "RN et alliés", EXD: "Extrême droite (autre)" };
 const N_SEATS = 539;
 
@@ -372,9 +384,14 @@ function hemiLegend(seats, ref) {
   }).join("") + `</div>`;
 }
 
+let PROP = null;
 function renderHemi(deps, done) {
   const box = $("hemi");
   if (!deps[0].real_all) { box.hidden = true; return; }
+  if (!PROP) {
+    PROP = fetch("proportionnelle.json", { cache: "no-cache" }).then(r => r.json()).catch(() => ({ forces: {} }));
+  }
+  if (PROP instanceof Promise) { PROP.then(p => { PROP = p; renderHemi(deps, done); }); return; }
   box.hidden = false;
   const t = state.force, doneSet = new Set(done.map(d => d.dep));
   const tot = pick => deps.reduce((acc, d) => {
@@ -383,14 +400,29 @@ function renderHemi(deps, done) {
   }, {});
   const real = toSeats(tot(d => d.real_all));
   const opt = toSeats(tot(d => doneSet.has(d.dep) ? (d.opt_all || {})[t] : d.real_all));
+  const prop = Object.fromEntries(Object.entries(PROP.forces).map(([f, v]) => [f, v.sieges]));
   const note = isT2()
-    ? "Sièges attendus au second tour arrondis à l'entier (plus fort reste)."
-    : "Force arrivée en tête au premier tour dans chaque circonscription.";
+    ? "Découpages : sièges attendus au second tour, arrondis à l'entier (plus fort reste)."
+    : "Découpages : force arrivée en tête au premier tour dans chaque circonscription.";
+  const order = [...SEAT_ORDER, ...Object.keys({ ...prop, ...real, ...opt }).filter(k => !SEAT_ORDER.includes(k))]
+    .filter(f => prop[f] || real[f] || opt[f]);
+  const dd = d => d ? `<span class="delta ${d > 0 ? "pos" : "neg"}">${d > 0 ? "+" : "−"}${Math.abs(d)}</span>` : `<span class="delta">=</span>`;
+  const rows = order.map(f => {
+    const pv = (PROP.forces[f] || {}).part;
+    return `<tr><td><span class="swatch" style="background:${col(f)}"></span>${SEAT_NAMES[f] || f}</td>
+      <td class="n">${pv != null ? pv.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " %" : "–"}</td>
+      <td class="n">${prop[f] || 0}</td><td class="n">${real[f] || 0} ${dd((real[f] || 0) - (prop[f] || 0))}</td>
+      <td class="n cur">${opt[f] || 0} ${dd((opt[f] || 0) - (prop[f] || 0))}</td></tr>`;
+  }).join("");
   box.innerHTML = `<div class="hemis">
+      <div class="hemi prop"><h3>Proportionnelle intégrale</h3>${hemiSVG(prop, "Assemblée, proportionnelle intégrale", t)}${hemiLegend(prop)}</div>
       <div class="hemi"><h3>Découpage réel</h3>${hemiSVG(real, "Assemblée, découpage réel", t)}${hemiLegend(real)}</div>
       <div class="hemi"><h3>Découpage optimisé pour ${NAMES[t]}</h3>${hemiSVG(opt, "Assemblée, découpage optimisé", t)}${hemiLegend(opt, real)}</div>
     </div>
-    <div class="note">Les 539 circonscriptions de métropole. ${note} Les 38 sièges d'outre-mer et des Français de l'étranger ne sont pas redécoupés ; la majorité absolue de l'Assemblée complète est de 289 sièges sur 577.</div>`;
+    <div class="cmp"><table>
+      <thead><tr><th>Force</th><th class="n">Voix au 1er tour</th><th class="n">Propor&shy;tionnelle</th><th class="n">Découpage réel</th><th class="n cur">Optimisé pour ${t}</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+    <div class="note">Les 539 circonscriptions de métropole. Proportionnelle intégrale : les 539 sièges répartis selon les voix du premier tour en métropole, sans seuil, au plus fort reste ; les écarts des deux dernières colonnes sont mesurés par rapport à elle. ${note} Les 38 sièges d'outre-mer et des Français de l'étranger ne sont pas redécoupés ; la majorité absolue de l'Assemblée complète est de 289 sièges sur 577.</div>`;
 }
 
 function renderControls() {
