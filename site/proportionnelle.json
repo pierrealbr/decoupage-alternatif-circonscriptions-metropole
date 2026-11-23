@@ -1,65 +1,65 @@
 {
- "seats_total": 539,
- "exprimes": 30690438,
+ "seats_total": 577,
+ "exprimes": 32057944,
  "forces": {
   "RN": {
-   "voix": 10444587,
-   "part": 34.03,
-   "sieges": 183
+   "voix": 10630217,
+   "part": 33.16,
+   "sieges": 191
   },
   "NFP": {
-   "voix": 8722904,
-   "part": 28.42,
-   "sieges": 153
+   "voix": 8971581,
+   "part": 27.99,
+   "sieges": 162
   },
   "ENS": {
-   "voix": 6615246,
-   "part": 21.55,
-   "sieges": 116
+   "voix": 6820446,
+   "part": 21.28,
+   "sieges": 123
   },
   "LR": {
-   "voix": 2054776,
-   "part": 6.7,
-   "sieges": 36
+   "voix": 2106166,
+   "part": 6.57,
+   "sieges": 38
   },
   "DVD": {
-   "voix": 993866,
-   "part": 3.24,
-   "sieges": 18
+   "voix": 1172482,
+   "part": 3.66,
+   "sieges": 21
   },
   "DVG": {
-   "voix": 366613,
-   "part": 1.19,
-   "sieges": 6
-  },
-  "EXG": {
-   "voix": 357352,
-   "part": 1.16,
-   "sieges": 6
+   "voix": 550591,
+   "part": 1.72,
+   "sieges": 10
   },
   "DVC": {
-   "voix": 312983,
-   "part": 1.02,
+   "voix": 391423,
+   "part": 1.22,
+   "sieges": 7
+  },
+  "EXG": {
+   "voix": 366594,
+   "part": 1.14,
+   "sieges": 7
+  },
+  "REG": {
+   "voix": 334372,
+   "part": 1.04,
    "sieges": 6
   },
   "EXD": {
-   "voix": 279813,
-   "part": 0.91,
+   "voix": 298613,
+   "part": 0.93,
    "sieges": 5
   },
   "OTHER": {
-   "voix": 206956,
-   "part": 0.67,
+   "voix": 232981,
+   "part": 0.73,
    "sieges": 4
   },
   "ECO": {
-   "voix": 171126,
-   "part": 0.56,
-   "sieges": 3
-  },
-  "REG": {
-   "voix": 164216,
-   "part": 0.54,
+   "voix": 182478,
+   "part": 0.57,
    "sieges": 3
   }
  }

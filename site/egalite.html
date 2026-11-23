@@ -60,6 +60,8 @@ h2 { font-size: 18px; font-weight: 700; }
 .hemi svg circle { stroke: var(--panel); stroke-width: .6; }
 .hemi svg g.party:hover circle { stroke: var(--ink); stroke-width: 1; }
 .hemi .total { font: 700 14px var(--font-data); fill: var(--ink); }
+.hemi line.maj { stroke: var(--ink); stroke-width: 1.6; }
+.hemi .majlab { font: 600 10px var(--font-body); fill: var(--ink); }
 .hemi .totlab { font: 500 9px var(--font-body); fill: var(--muted); }
 .hleg { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; font-size: 12.5px; }
 .hleg span.it { display: inline-flex; align-items: center; gap: 6px; }
@@ -101,7 +103,7 @@ tr.tot td { font-weight: 700; border-top: 2px solid var(--line-strong); }
 
   <section class="card">
     <div class="hemis" id="hemis"></div>
-    <div class="note">Les 539 circonscriptions de métropole, en sièges attendus au second tour arrondis à l'entier (plus fort reste). Les 38 sièges d'outre-mer et des Français de l'étranger ne sont pas redécoupés ; la majorité absolue de l'Assemblée complète est de 289 sièges sur 577.</div>
+    <div class="note">Les 577 sièges : en métropole, sièges attendus au second tour arrondis à l'entier (plus fort reste) ; les 38 circonscriptions d'outre-mer et des Français de l'étranger ne sont pas redécoupées et comptent avec le député réellement élu en 2024. Majorité absolue : 289 sièges.</div>
   </section>
 
   <section class="cols">
@@ -122,8 +124,8 @@ tr.tot td { font-weight: 700; border-top: 2px solid var(--line-strong); }
 
   <section class="card">
     <h2>Comment ce scénario est construit</h2>
-    <p style="margin:0;max-width:80ch">Pour chacun des 96 départements, on dispose de cinq découpages : le découpage réel et les quatre découpages optimisés (pour le NFP, le RN, Ensemble et LR). On choisit un découpage par département de sorte que le NFP, le RN et Ensemble obtiennent le même nombre de sièges attendus, à <span id="tol"></span> siège près, en modifiant <b>le moins de départements possible</b> (programme linéaire en nombres entiers). D'autres combinaisons atteignent aussi l'égalité, avec un niveau commun allant d'environ 148 à 175 sièges chacun ; celle-ci est la plus proche de la carte actuelle.</p>
-    <p class="note" style="margin:0">Il s'agit de sièges <i>attendus</i> d'après le modèle de second tour (qualifications, désistements probables, reports de voix) : dans un scénario donné, le partage serait proche de l'égalité sans l'être forcément à un siège près. Au critère « en tête au premier tour », les découpages existants ne permettent pas l'égalité : le RN reste au moins à 207 circonscriptions en tête.</p>
+    <p style="margin:0;max-width:80ch">Pour chacun des 96 départements, on dispose de cinq découpages : le découpage réel et les quatre découpages optimisés (pour le NFP, le RN, Ensemble et LR). On choisit un découpage par département de sorte que le NFP, le RN et Ensemble obtiennent le même nombre de sièges attendus sur l'ensemble de l'Assemblée (577 sièges, dont les 38 hors métropole avec leur député réellement élu), à <span id="tol"></span> siège près, en modifiant <b>le moins de départements possible</b> (programme linéaire en nombres entiers). D'autres combinaisons atteignent aussi l'égalité, à des niveaux différents ; celle-ci est la plus proche de la carte actuelle.</p>
+    <p class="note" style="margin:0">Il s'agit de sièges <i>attendus</i> d'après le modèle de second tour (qualifications, désistements probables, reports de voix) : dans un scénario donné, le partage serait proche de l'égalité sans l'être forcément à un siège près. Au critère « en tête au premier tour », les découpages existants ne permettent pas l'égalité : le RN reste au moins à 208 circonscriptions en tête sur 577.</p>
   </section>
 </main>
 <div class="tip" id="tip" hidden></div>
@@ -137,16 +139,17 @@ const NAMES = { NFP: "Nouveau Front populaire", RN: "RN et alliés", ENS: "Ensem
 const SEAT_ORDER = ["NFP", "ECO", "DVG", "REG", "OTHER", "ENS", "DVC", "LR", "DVD", "RN", "EXD"];
 const SEAT_NAMES = { NFP: "NFP", ECO: "Écologistes", DVG: "Divers gauche", REG: "Régionalistes", OTHER: "Divers", ENS: "Ensemble",
   DVC: "Divers centre", LR: "LR", DVD: "Divers droite", RN: "RN et alliés", EXD: "Extrême droite (autre)" };
-const N_SEATS = 539;
+const N_SEATS = 577, N_METRO = 539;
+const addSeats = (a, b) => { const o = { ...a }; for (const [f, v] of Object.entries(b || {})) o[f] = (o[f] || 0) + v; return o; };
 const f1 = x => Number(x).toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const dl = d => `<span class="delta ${d > 0.05 ? "pos" : d < -0.05 ? "neg" : ""}">${d > 0.05 ? "+" : d < -0.05 ? "−" : "±"}${f1(Math.abs(d))}</span>`;
 
 function toSeats(obj) {
   const keys = Object.keys(obj).filter(k => obj[k] > 0);
   const tot = keys.reduce((s, k) => s + obj[k], 0) || 1;
-  const q = keys.map(k => [k, obj[k] * N_SEATS / tot]);
+  const q = keys.map(k => [k, obj[k] * N_METRO / tot]);
   const out = Object.fromEntries(q.map(([k, v]) => [k, Math.floor(v)]));
-  let left = N_SEATS - Object.values(out).reduce((a, b) => a + b, 0);
+  let left = N_METRO - Object.values(out).reduce((a, b) => a + b, 0);
   q.sort((a, b) => (b[1] % 1) - (a[1] % 1));
   for (let i = 0; left > 0; i = (i + 1) % q.length, left--) out[q[i][0]]++;
   return out;
@@ -175,7 +178,10 @@ function hemiSVG(seats, label) {
     g += "</g>";
   }
   const top = ["NFP", "RN", "ENS"].map(f => seats[f] || 0).join(" · ");
-  return `<svg viewBox="0 0 420 215" role="img" aria-label="${label}">${g}
+  return `<svg viewBox="0 -28 420 243" role="img" aria-label="${label}">${g}
+    <line x1="${cx}" x2="${cx}" y1="${cy - S * 1.085}" y2="${cy - S * 1.025}" class="maj"/>
+    <line x1="${cx}" x2="${cx}" y1="${cy - S * 0.4}" y2="${cy - S * 0.35}" class="maj"/>
+    <text class="majlab" x="${cx}" y="${cy - S * 1.085 - 3}" text-anchor="middle">majorité : 289</text>
     <text class="total" x="${cx}" y="${cy - 22}" text-anchor="middle">${top}</text>
     <text class="totlab" x="${cx}" y="${cy - 8}" text-anchor="middle">NFP · RN · ENS</text></svg>`;
 }
@@ -247,8 +253,8 @@ function drawMap(fr, eg) {
   $("lede").innerHTML = `Avec les mêmes voix qu'en 2024, il suffit de redécouper <b>${ch.length} départements sur 96</b>, en réutilisant des découpages déjà calculés, pour que le Nouveau Front populaire, le RN et Ensemble obtiennent chacun environ <b>${Math.round(eg.scen.NFP)} sièges attendus</b> au second tour.`;
   $("kpis").innerHTML = ["NFP", "RN", "ENS", "LR"].map(f => `<div class="kpi"><div class="name"><span class="swatch" style="background:${col(f)}"></span>${NAMES[f]}</div>
     <div class="big"><span class="num">${f1(eg.real[f])}</span><span class="arrow">→</span><span class="num">${f1(eg.scen[f])}</span>${dl(eg.scen[f] - eg.real[f])}</div>
-    <div class="note">sièges attendus sur 539 · réel → scénario</div></div>`).join("");
-  const sr = toSeats(eg.real), ss = toSeats(eg.scen);
+    <div class="note">sièges attendus sur 577 · réel → scénario</div></div>`).join("");
+  const sr = addSeats(toSeats(eg.real_metro), eg.extra), ss = addSeats(toSeats(eg.scen_metro), eg.extra);
   $("hemis").innerHTML = `<div class="hemi"><h3>Découpage réel</h3>${hemiSVG(sr, "Assemblée, découpage réel")}${hemiLegend(sr)}</div>
     <div class="hemi"><h3>Scénario « trois blocs à égalité »</h3>${hemiSVG(ss, "Assemblée, scénario")}${hemiLegend(ss, sr)}</div>`;
   const F = ["NFP", "RN", "ENS", "LR"];

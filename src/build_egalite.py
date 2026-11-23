@@ -3,6 +3,7 @@
 Dans chaque département, on choisit un des découpages déjà calculés : le réel ou l'optimisé pour NFP, RN, ENS ou LR.
 On cherche une combinaison où NFP, RN et ENS ont le même nombre de sièges attendus (écart ≤ TOL), en modifiant
 le moins de départements possible par rapport au découpage réel (programme linéaire en nombres entiers).
+Les 38 circonscriptions hors métropole (non redécoupées) comptent avec leur député réellement élu en 2024.
 
 Usage : python src/build_egalite.py   -> site/data_t2/egalite.json
 """
@@ -22,6 +23,8 @@ TOL = 0.5  # écart maximal toléré entre deux des trois forces, en sièges att
 
 def main():
     deps = json.load(open(SITE / "index.json"))["departements"]
+    extra = json.load(open(SITE.parent / "hors_metropole.json"))["t2"]  # élus 2024 hors métropole
+    ex = np.array([extra.get(f, 0) for f in EQ], dtype=float)
     opts = []  # (i_dep, option, dict force -> sièges attendus)
     for i, d in enumerate(deps):
         for o in OPTIONS:
@@ -34,7 +37,7 @@ def main():
         A.append([1.0 if o[0] == i else 0.0 for o in opts]); lo.append(1); hi.append(1)
     for a in range(3):  # |S_a - S_b| <= TOL
         for b in range(a + 1, 3):
-            A.append(C[:, a] - C[:, b]); lo.append(-TOL); hi.append(TOL)
+            A.append(C[:, a] - C[:, b]); lo.append(-TOL - (ex[a] - ex[b])); hi.append(TOL - (ex[a] - ex[b]))
     cost = np.array([0.0 if o[1] == "real" else 1.0 for o in opts])  # nombre de départements modifiés
     res = milp(cost, constraints=LinearConstraint(np.array(A), lo, hi), integrality=np.ones(n),
                bounds=Bounds(0, 1), options={"time_limit": 300})
@@ -51,8 +54,10 @@ def main():
                              real={f: d["real_all"].get(f, 0) for f in EQ + ["LR"]},
                              scen={f: counts.get(f, 0) for f in EQ + ["LR"]}))
     r2 = lambda o: {f: round(v, 2) for f, v in sorted(o.items(), key=lambda kv: -kv[1])}
-    doc = dict(tol=TOL, changed=int(sum(d["choice"] != "real" for d in out_deps)),
-               real=r2(real_tot), scen=r2(sc_tot), departements=out_deps)
+    plus = lambda o: {f: o.get(f, 0) + extra.get(f, 0) for f in set(o) | set(extra)}
+    doc = dict(tol=TOL, changed=int(sum(d["choice"] != "real" for d in out_deps)), extra=extra,
+               real_metro=r2(real_tot), scen_metro=r2(sc_tot), real=r2(plus(real_tot)), scen=r2(plus(sc_tot)),
+               departements=out_deps)
     json.dump(doc, open(SITE / "egalite.json", "w"), ensure_ascii=False, indent=0)
     print("départements modifiés :", doc["changed"], "/", len(deps))
     print("réel     :", {f: doc["real"].get(f) for f in EQ + ["LR"]})

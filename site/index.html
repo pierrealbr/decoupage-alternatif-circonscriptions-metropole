@@ -64,6 +64,13 @@ h2 { font-size: 18px; font-weight: 700; }
 .hemi svg circle { stroke: var(--panel); stroke-width: .6; }
 .hemi svg g.party:hover circle { stroke: var(--ink); stroke-width: 1; }
 .hemi .total { font: 700 15px var(--font-data); fill: var(--ink); }
+.hemi line.maj { stroke: var(--ink); stroke-width: 1.6; }
+.hemi .majlab { font: 600 10px var(--font-body); fill: var(--ink); }
+.hors { font-size: 12.5px; }
+.hors summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.hors .tbl { overflow-x: auto; }
+.hors table { margin-top: 8px; }
+.hors td:first-child { white-space: normal; min-width: 160px; }
 .hemi .totlab { font: 500 9px var(--font-body); fill: var(--muted); }
 .hleg { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; font-size: 12.5px; }
 .hleg span.it { display: inline-flex; align-items: center; gap: 6px; }
@@ -179,11 +186,11 @@ th.sortable { cursor: pointer; }
   <section class="france">
     <div class="maps">
       <div class="mapcard">
-        <div class="maphead"><h2>France · découpage réel</h2><div class="score" id="frScoreReal"></div></div>
+        <div class="maphead"><h2>Métropole · découpage réel</h2><div class="score" id="frScoreReal"></div></div>
         <div class="svgbox" id="frReal"></div>
       </div>
       <div class="mapcard">
-        <div class="maphead"><h2 id="frOptTitle">France · optimisé</h2><div class="score" id="frScoreOpt"></div></div>
+        <div class="maphead"><h2 id="frOptTitle">Métropole · optimisé</h2><div class="score" id="frScoreOpt"></div></div>
         <div class="svgbox" id="frOpt"></div>
       </div>
     </div>
@@ -301,13 +308,14 @@ function renderSummary() {
     const realAll = deps.reduce((s, d) => s + d.real[t], 0);
     const realDone = done.reduce((s, d) => s + d.real[t], 0);
     const optDone = done.reduce((s, d) => s + d.opt[t], 0);
-    const est = realAll - realDone + optDone;
+    const ex = extraOf()[t] || 0;
+    const est = realAll - realDone + optDone + ex;
     const b = document.createElement("button");
     b.className = "tile"; b.type = "button"; b.setAttribute("aria-pressed", String(t === state.force));
     b.innerHTML = `<div class="name"><span class="swatch" style="background:${col(t)}"></span>${NAMES[t]}</div>
-      <div class="big"><span class="num">${fmtN(realAll)}</span><span class="arrow">→</span><span class="num">${fmtN(est)}</span>
-      <span class="delta ${est - realAll > 0.05 ? "pos" : ""}">${fmtDelta(est - realAll)}</span></div>
-      <div class="foot">${MODES[state.mode].unit} sur 539 · réel → optimisé${done.length < deps.length ? " (départements restants au réel)" : ""}</div>`;
+      <div class="big"><span class="num">${fmtN(realAll + ex)}</span><span class="arrow">→</span><span class="num">${fmtN(est)}</span>
+      <span class="delta ${est - realAll - ex > 0.05 ? "pos" : ""}">${fmtDelta(est - realAll - ex)}</span></div>
+      <div class="foot">${MODES[state.mode].unit} sur 577 · réel → optimisé${done.length < deps.length ? " (départements restants au réel)" : ""}</div>`;
     b.onclick = () => { state.force = t; render(); };
     box.appendChild(b);
   }
@@ -316,19 +324,22 @@ function renderSummary() {
   $("progress").innerHTML = `${done.length} départements sur ${deps.length} calculés${done.length < deps.length ? " · calcul en cours, rechargez la page pour voir les nouveaux" : ""}<div class="bar"><span style="width:${pct}%"></span></div>`;
 }
 
-// Hémicycle : composition des 539 sièges métropolitains, découpage réel contre découpage optimisé pour la force choisie
+// Hémicycle : composition des 577 sièges (539 métropolitains redécoupables + 38 hors métropole au réel)
 const SEAT_ORDER = ["EXG", "NFP", "ECO", "DVG", "REG", "OTHER", "ENS", "DVC", "LR", "DVD", "RN", "EXD"];
 const SEAT_NAMES = { EXG: "Extrême gauche", NFP: "NFP", ECO: "Écologistes", DVG: "Divers gauche", REG: "Régionalistes", OTHER: "Divers", ENS: "Ensemble",
   DVC: "Divers centre", LR: "LR", DVD: "Divers droite", RN: "RN et alliés", EXD: "Extrême droite (autre)" };
-const N_SEATS = 539;
+const N_SEATS = 577, N_METRO = 539;
+// 38 circonscriptions hors métropole, jamais redécoupées : force en tête au 1er tour, ou député réellement élu
+const extraOf = () => (state.hm ? state.hm[isT2() ? "t2" : "t1"] : {});
+const addSeats = (a, b) => { const o = { ...a }; for (const [f, v] of Object.entries(b || {})) o[f] = (o[f] || 0) + v; return o; };
 
 // sièges attendus (fractionnaires au 2nd tour) -> sièges entiers, méthode du plus fort reste
 function toSeats(obj) {
   const keys = Object.keys(obj).filter(k => obj[k] > 0);
   const tot = keys.reduce((s, k) => s + obj[k], 0) || 1;
-  const q = keys.map(k => [k, obj[k] * N_SEATS / tot]);
+  const q = keys.map(k => [k, obj[k] * N_METRO / tot]);
   const out = Object.fromEntries(q.map(([k, v]) => [k, Math.floor(v)]));
-  let left = N_SEATS - Object.values(out).reduce((a, b) => a + b, 0);
+  let left = N_METRO - Object.values(out).reduce((a, b) => a + b, 0);
   q.sort((a, b) => (b[1] % 1) - (a[1] % 1));
   for (let i = 0; left > 0; i = (i + 1) % q.length, left--) out[q[i][0]]++;
   return out;
@@ -370,7 +381,10 @@ function hemiSVG(seats, label, focus) {
     g += c + "</g>";
   }
   const nf = seats[focus] || 0;
-  return `<svg viewBox="0 0 420 215" role="img" aria-label="${label}">${g}
+  return `<svg viewBox="0 -28 420 243" role="img" aria-label="${label}">${g}
+    <line x1="${cx}" x2="${cx}" y1="${cy - S * 1.085}" y2="${cy - S * 1.025}" class="maj"/>
+    <line x1="${cx}" x2="${cx}" y1="${cy - S * 0.4}" y2="${cy - S * 0.35}" class="maj"/>
+    <text class="majlab" x="${cx}" y="${cy - S * 1.085 - 3}" text-anchor="middle">majorité : 289</text>
     <text class="total" x="${cx}" y="${cy - 22}" text-anchor="middle">${focus} ${nf}</text>
     <text class="totlab" x="${cx}" y="${cy - 8}" text-anchor="middle">sièges sur ${N_SEATS}</text></svg>`;
 }
@@ -398,12 +412,17 @@ function renderHemi(deps, done) {
     for (const [f, v] of Object.entries(pick(d) || {})) acc[f] = (acc[f] || 0) + v;
     return acc;
   }, {});
-  const real = toSeats(tot(d => d.real_all));
-  const opt = toSeats(tot(d => doneSet.has(d.dep) ? (d.opt_all || {})[t] : d.real_all));
+  const ex = extraOf();
+  const real = addSeats(toSeats(tot(d => d.real_all)), ex);
+  const opt = addSeats(toSeats(tot(d => doneSet.has(d.dep) ? (d.opt_all || {})[t] : d.real_all)), ex);
   const prop = Object.fromEntries(Object.entries(PROP.forces).map(([f, v]) => [f, v.sieges]));
   const note = isT2()
-    ? "Découpages : sièges attendus au second tour, arrondis à l'entier (plus fort reste)."
+    ? "Découpages : en métropole, sièges attendus au second tour arrondis à l'entier (plus fort reste) ; hors métropole, députés réellement élus en 2024."
     : "Découpages : force arrivée en tête au premier tour dans chaque circonscription.";
+  const hm = state.hm ? `<details class="hors"><summary>Les 38 circonscriptions hors métropole (non redécoupées)</summary><div class="tbl"><table>
+      <thead><tr><th>Circonscription</th><th>En tête au 1er tour</th><th>Élu en 2024</th></tr></thead><tbody>${state.hm.circos.map(c =>
+        `<tr><td>${c.dep_name} · ${c.name}</td><td><span class="chip"><span class="swatch" style="background:${col(c.t1)}"></span>${SEAT_NAMES[c.t1] || c.t1}</span> <span class="note">${c.t1_share.toLocaleString("fr-FR")} %</span></td>
+         <td><span class="chip"><span class="swatch" style="background:${col(c.elu)}"></span>${SEAT_NAMES[c.elu] || c.elu}</span> <span class="note">${c.elu_nuance}${c.elu_t1 ? ", dès le 1er tour" : ""}</span></td></tr>`).join("")}</tbody></table></div></details>` : "";
   const order = [...SEAT_ORDER, ...Object.keys({ ...prop, ...real, ...opt }).filter(k => !SEAT_ORDER.includes(k))]
     .filter(f => prop[f] || real[f] || opt[f]);
   const dd = d => d ? `<span class="delta ${d > 0 ? "pos" : "neg"}">${d > 0 ? "+" : "−"}${Math.abs(d)}</span>` : `<span class="delta">=</span>`;
@@ -422,7 +441,7 @@ function renderHemi(deps, done) {
     <div class="cmp"><table>
       <thead><tr><th>Force</th><th class="n">Voix au 1er tour</th><th class="n">Propor&shy;tionnelle</th><th class="n">Découpage réel</th><th class="n cur">Optimisé pour ${t}</th></tr></thead>
       <tbody>${rows}</tbody></table></div>
-    <div class="note">Les 539 circonscriptions de métropole. Proportionnelle intégrale : les 539 sièges répartis selon les voix du premier tour en métropole, sans seuil, au plus fort reste ; les écarts des deux dernières colonnes sont mesurés par rapport à elle. ${note} Les 38 sièges d'outre-mer et des Français de l'étranger ne sont pas redécoupés ; la majorité absolue de l'Assemblée complète est de 289 sièges sur 577.</div>`;
+    <div class="note">Les 577 sièges de l'Assemblée : les 539 circonscriptions de métropole, redécoupées, et les 38 d'outre-mer et des Français de l'étranger, gardées telles quelles. Proportionnelle intégrale : les 577 sièges répartis selon les voix du premier tour dans toute la France, sans seuil, au plus fort reste ; les écarts des deux dernières colonnes sont mesurés par rapport à elle. ${note} Majorité absolue : 289 sièges.</div>${hm}`;
 }
 
 function renderControls() {
@@ -747,7 +766,7 @@ async function renderFrance() {
   const optDone = opt.filter(d => done.has(d.dep));
   const todo = new Set(state.index.departements.map(d => d.dep).filter(d => !done.has(d)));
   drawFrance($("frOpt"), fr, optDone, todo, "fro");
-  $("frOptTitle").textContent = `France · optimisé pour ${state.force}`;
+  $("frOptTitle").textContent = `Métropole · optimisé pour ${state.force}`;
   const sumV = arr => arr.reduce((s, d) => s + valOf(d, state.force), 0);
   const nReal = sumV(real);
   const nOpt = sumV(optDone) + sumV(real.filter(d => todo.has(d.dep)));
@@ -788,7 +807,8 @@ function step(dir) {
 
 (async function init() {
   readHash();
-  state.index = await getIndex();
+  [state.index, state.hm] = await Promise.all([getIndex(),
+    fetch("hors_metropole.json", { cache: "no-cache" }).then(r => r.json()).catch(() => null)]);
   if (!state.dep) {
     const done = state.index.departements.find(d => TARGETS.every(t => d.opt[t] != null));
     state.dep = (done || state.index.departements[0]).dep;

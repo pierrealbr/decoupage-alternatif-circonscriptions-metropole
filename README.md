@@ -6,6 +6,7 @@ Question : avec les mêmes voix, combien de circonscriptions une force peut-elle
 si on redessine les circonscriptions à son avantage ?
 
 Scrutin testé : **législatives 2024, 1er tour**, France métropolitaine (539 circonscriptions ; étranger et outre-mer exclus).
+Sur le site, les 38 circonscriptions d'outre-mer et des Français de l'étranger sont ajoutées sans être redécoupées (force en tête au 1er tour, ou député réellement élu au 2nd tour) pour afficher l'Assemblée complète de 577 sièges : `python src/build_hors_metropole.py` (produit aussi la proportionnelle intégrale sur 577 sièges).
 
 ## Pipeline
 
